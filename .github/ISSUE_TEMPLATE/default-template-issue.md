@@ -14,9 +14,9 @@ Add here the descriptions of this issue
 Add here the expected behavior of this issue
 
 ## Checklist
-- [] Item 1
-- [] Item 2
-- [] ...
+- [ ] Item 1
+- [ ] Item 2
+- [ ] ...
 
 ## Screenshots
 Add here screenshots case needes
