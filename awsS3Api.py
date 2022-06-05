@@ -4,7 +4,6 @@ from s3ClientFactory import S3ClientFactory
 class AwsS3Api(ABC):
     remote_bucket = ""
     local_bucket = ""
-    s3_client = None
 
     def __init__(self, s3_client_name):
         self.s3_client = S3ClientFactory.create(s3_client_name)

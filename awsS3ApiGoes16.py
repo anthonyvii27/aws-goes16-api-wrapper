@@ -10,7 +10,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         super().__init__(s3_client_name)
         self.set_remote_bucket("")
 
-    def set_intial_date(self, date):
+    def set_initial_date(self, date):
         self.initial_date = date
 
     def set_due_date(self, date):
