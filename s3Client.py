@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 
 class S3Client(ABC):
-    def __init__(self, s3_client):
-        self.client = s3_client
+    def __init__(self):
+        pass
 
     @abstractmethod
-    def authenticate(self):
+    def authenticate(self, access_key, secret_key):
         pass
 
     @abstractmethod
