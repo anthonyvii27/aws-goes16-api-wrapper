@@ -14,5 +14,5 @@ class S3Client(ABC):
         pass
 
     @abstractmethod
-    def list_files(self):
+    def list_files(self, bucket_name):
         pass
