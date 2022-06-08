@@ -15,13 +15,12 @@ class S3fsS3Client(S3Client):
     def list_buckets(self):
         pass
 
-    def list_files(self, bucket_name):
+    def list_files(self, bucket_name, local_bucket_path):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
 
-        # if bucket_name == "remoto" or bucket_name == self.local_bucket:
-        #     # Abre a pasta e lista os arquivos sem usar o s3fs/boto3
-        #     pass
+        if bucket_name == "remoto" or bucket_name == local_bucket_path:
+            pass
 
         try:
             files = self.client.ls(f's3://{bucket_name}')
