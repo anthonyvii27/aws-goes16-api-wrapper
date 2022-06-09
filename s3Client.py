@@ -10,7 +10,7 @@ class S3Client(ABC):
         pass
 
     @abstractmethod
-    def list_buckets(self):
+    def list_buckets(self, remote_bucket_path, local_bucket_path):
         pass
 
     @abstractmethod
