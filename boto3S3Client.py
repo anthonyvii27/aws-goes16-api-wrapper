@@ -47,7 +47,3 @@ class Boto3S3Client(S3Client):
 
         except Warning as err:
             print(f'Error: {err}')
-
-
-teste = Boto3S3Client()
-teste.list_buckets(local_bucket_path="teste/abc/123", remote_bucket_path="abcs//123/fdsaf")

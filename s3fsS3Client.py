@@ -7,13 +7,26 @@ from exceptions import ValueNotProvidedError
 class S3fsS3Client(S3Client):
     def __init__(self):
         super().__init__()
+        self.is_authenticated = False
         self.client = s3fs.S3FileSystem(anon=True)
 
     def authenticate(self, access_key, secret_key):
-        self.client = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
+        try:
+            self.client = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
+            self.is_authenticated = True
+        except Warning as err:
+            print(f'Error: {err}')
 
-    def list_buckets(self):
-        pass
+    def list_buckets(self, remote_bucket_path, local_bucket_path):
+        print(f'----------- LOCAL -----------\n- {local_bucket_path}\n')
+        print('----------- REMOTE -----------\n')
+
+        if remote_bucket_path:
+            print(f'- {remote_bucket_path}')
+
+        #TODO
+        if self.is_authenticated:
+            pass
 
     def list_files(self, bucket_name, local_bucket_path):
         if not bucket_name:
