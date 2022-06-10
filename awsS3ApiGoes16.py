@@ -1,5 +1,6 @@
 from awsS3Api import AwsS3Api
 
+
 class AwsS3ApiGoes16(AwsS3Api):
     initial_date = ""
     due_date = ""
@@ -8,7 +9,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
     def __init__(self, s3_client_name="boto3"):
         super().__init__(s3_client_name)
-        self.set_remote_bucket("")
+        self.set_remote_bucket("noaa-goes16")
 
     def set_initial_date(self, date):
         self.initial_date = date
