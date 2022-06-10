@@ -34,16 +34,17 @@ class Boto3S3Client(S3Client):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
 
-        if bucket_name == 'remoto' or bucket_name == local_bucket_path:
+        # TODO - Implements local file management
+        if bucket_name == 'local' or bucket_name == local_bucket_path:
             pass
 
         try:
-            for key in self.client.list_objects_v2(
+            for file in self.client.list_objects_v2(
                     Bucket=bucket_name,
                     Prefix='',
                     Delimiter=''
             )['Contents']:
-                print(key['Key'])
+                print(file['Key'])
 
         except Warning as err:
             print(f'Error: {err}')

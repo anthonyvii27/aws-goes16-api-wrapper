@@ -14,8 +14,8 @@ class S3fsS3Client(S3Client):
         try:
             self.client = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
             self.is_authenticated = True
-        except Warning as err:
-            print(f'Error: {err}')
+        except Warning:
+            print('unable to authenticate')
 
     def list_buckets(self, remote_bucket_path, local_bucket_path):
         print(f'----------- LOCAL -----------\n- {local_bucket_path}\n')
@@ -24,7 +24,7 @@ class S3fsS3Client(S3Client):
         if remote_bucket_path:
             print(f'- {remote_bucket_path}')
 
-        #TODO
+        # TODO - Implements bucket listing by s3fs
         if self.is_authenticated:
             pass
 
@@ -32,14 +32,15 @@ class S3fsS3Client(S3Client):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
 
-        if bucket_name == "remoto" or bucket_name == local_bucket_path:
+        # TODO - Implements local file management
+        if bucket_name == 'local' or bucket_name == local_bucket_path:
             pass
 
         try:
             files = self.client.ls(f's3://{bucket_name}')
 
             if len(files) == 0:
-                print(f'The bucket {bucket_name} hasn\'\t files to list')
+                print(f'the bucket {bucket_name} hasn\'\t files to list')
                 return
 
             for file in files:
