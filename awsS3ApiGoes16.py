@@ -1,24 +1,49 @@
 from awsS3Api import AwsS3Api
+import re
 
 
 class AwsS3ApiGoes16(AwsS3Api):
-    initial_date = ""
-    due_date = ""
-    data_variable = ""
-    product = ""
+    def __init__(self, s3_client_name='s3fs', product='GLM-L2-LCFA'):
+        super().__init__(s3_client_name, remote_bucket='noaa-goes16')
+        self.__product = product
+        self.__initial_date = ''
+        self.__due_date = ''
+        self.__data_variable = ''
 
-    def __init__(self, s3_client_name="boto3"):
-        super().__init__(s3_client_name)
-        self.set_remote_bucket("noaa-goes16")
+    @property
+    def product(self):
+        return self.__product
 
-    def set_initial_date(self, date):
-        self.initial_date = date
+    @property
+    def initial_date(self):
+        return self.__initial_date
 
-    def set_due_date(self, date):
-        self.due_date = date
+    @property
+    def due_date(self):
+        return self.__due_date
 
-    def set_data_variable(self, data_variable):
-        self.data_variable = data_variable
+    @property
+    def data_variable(self):
+        return self.__data_variable
 
-    def set_product(self, product):
-        self.product = product
+    @product.setter
+    def product(self, product_name):
+        self.__product = product_name
+
+    @initial_date.setter
+    def initial_date(self, date):
+        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$', date)
+        if not is_valid:
+            raise Warning('Invalid format')
+        self.__initial_date = date
+
+    @due_date.setter
+    def due_date(self, date):
+        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$', date)
+        if not is_valid:
+            raise Warning('Invalid format')
+        self.__due_date = date
+
+    @data_variable.setter
+    def data_variable(self, value):
+        self.__data_variable = value
