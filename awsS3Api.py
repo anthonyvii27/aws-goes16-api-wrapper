@@ -1,10 +1,11 @@
 from abc import ABC
 from s3ClientFactory import S3ClientFactory
 from exceptions import ValueNotProvidedError
+import os
 
 
 class AwsS3Api(ABC):
-    def __init__(self, s3_client_name, remote_bucket='', local_bucket=''):
+    def __init__(self, s3_client_name, remote_bucket='', local_bucket=os.getcwd()):
         self.s3_client = S3ClientFactory.create(s3_client_name)
         self.__remote_bucket = remote_bucket
         self.__local_bucket = local_bucket
@@ -27,4 +28,7 @@ class AwsS3Api(ABC):
     def local_bucket(self, bucket_name):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
-        self.__local_bucket = bucket_name
+        if bucket_name == '/':
+            self.__local_bucket = os.getcwd()
+        else:
+            self.__local_bucket = bucket_name

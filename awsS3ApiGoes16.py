@@ -3,9 +3,9 @@ import re
 
 
 class AwsS3ApiGoes16(AwsS3Api):
-    def __init__(self, s3_client_name='s3fs', product='GLM-L2-LCFA'):
+    def __init__(self, s3_client_name='s3fs'):
         super().__init__(s3_client_name, remote_bucket='noaa-goes16')
-        self.__product = product
+        self.__product = ''
         self.__initial_date = ''
         self.__due_date = ''
         self.__data_variable = ''

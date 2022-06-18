@@ -19,7 +19,7 @@ class S3fsS3Client(S3Client):
 
     def list_buckets(self, remote_bucket_path, local_bucket_path):
         print(f'----------- LOCAL -----------\n- {local_bucket_path}\n')
-        print('----------- REMOTE -----------\n')
+        print('----------- REMOTE -----------')
 
         if remote_bucket_path:
             print(f'- {remote_bucket_path}')
