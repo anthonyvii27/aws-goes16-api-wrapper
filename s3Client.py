@@ -16,3 +16,7 @@ class S3Client(ABC):
     @abstractmethod
     def list_files(self, bucket_name, local_bucket_path):
         pass
+
+    @abstractmethod
+    def get_file(self, remote_bucket_path, filename):
+        pass

@@ -48,3 +48,6 @@ class S3fsS3Client(S3Client):
 
         except Warning as err:
             print(f'Error: {err}')
+
+    def get_file(self, remote_bucket_path, filename):
+        self.client.get(remote_bucket_path, filename)
