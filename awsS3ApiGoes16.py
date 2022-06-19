@@ -1,5 +1,5 @@
 from awsS3Api import AwsS3Api
-from utils import convert_to_date
+from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour
 import re
 
 
@@ -33,14 +33,14 @@ class AwsS3ApiGoes16(AwsS3Api):
 
     @initial_date.setter
     def initial_date(self, date):
-        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$', date)
+        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date)
         if not is_valid:
             raise Warning('Invalid format')
         self.__initial_date = convert_to_date(date)
 
     @due_date.setter
     def due_date(self, date):
-        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$', date)
+        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date)
         if not is_valid:
             raise Warning('Invalid format')
 
@@ -57,3 +57,19 @@ class AwsS3ApiGoes16(AwsS3Api):
     @data_variable.setter
     def data_variable(self, value):
         self.__data_variable = value
+
+    def authenticate(self, access_key, secret_key):
+        self._s3_client.authenticate(access_key, secret_key)
+
+    def list_buckets(self):
+        self._s3_client.list_buckets(self.remote_bucket, self.local_bucket)
+
+    def list_files(self):
+        self._s3_client.list_files(self.remote_bucket, self.local_bucket)
+
+    def get_file(self, filename):
+        year = get_year(self.__initial_date)
+        hour = get_hour(self.__initial_date)
+        day_of_year = convert_date_to_day_of_year(self.__initial_date)
+        self._s3_client.get_file(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}', filename)
+

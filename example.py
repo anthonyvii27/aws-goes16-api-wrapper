@@ -7,8 +7,8 @@ print(f'Remote bucket: {apiGoes.remote_bucket}')
 print(f'Local bucket: {apiGoes.local_bucket}')
 print(f'Product: {apiGoes.product}')
 
-apiGoes.initial_date = '2019-04-08'
-apiGoes.due_date = '2019-05-08'
+apiGoes.initial_date = '2019-04-08 18'
+apiGoes.due_date = '2019-05-08 18'
 
 print(f'Initial date: {apiGoes.initial_date}')
 print(f'Due date: {apiGoes.due_date}')
@@ -23,8 +23,12 @@ print(f'New local bucket from alias: {apiGoes.local_bucket}')
 
 print('\n')
 
-bucket_list = apiGoes.s3_client.list_buckets(apiGoes.remote_bucket, apiGoes.local_bucket)
+apiGoes.list_buckets()
 
 print('\n')
 
-file_list = apiGoes.s3_client.list_files('noaa-goes16/GLM-L2-LCFA/2019/098/18', apiGoes.local_bucket)
+apiGoes.list_files()
+
+print('\n')
+
+apiGoes.get_file(filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
