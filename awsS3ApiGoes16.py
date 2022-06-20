@@ -1,12 +1,12 @@
 from awsS3Api import AwsS3Api
-from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour
-import re
+from exceptions import ValueNotProvidedError
+from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour, is_valid_date
 
 
 class AwsS3ApiGoes16(AwsS3Api):
     def __init__(self, s3_client_name='s3fs'):
         super().__init__(s3_client_name, remote_bucket='noaa-goes16')
-        self.__product = ''
+        self.__product = 'GLM-L2-LCFA'
         self.__initial_date = ''
         self.__due_date = ''
         self.__data_variable = ''
@@ -29,18 +29,28 @@ class AwsS3ApiGoes16(AwsS3Api):
 
     @product.setter
     def product(self, product_name):
+        if not product_name:
+            raise ValueNotProvidedError(message='product_name parameter not provided')
+
         self.__product = product_name
 
     @initial_date.setter
     def initial_date(self, date):
-        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date)
+        if not date:
+            raise ValueNotProvidedError(message='date parameter not provided')
+
+        is_valid = is_valid_date(date)
         if not is_valid:
             raise Warning('Invalid format')
+
         self.__initial_date = convert_to_date(date)
 
     @due_date.setter
     def due_date(self, date):
-        is_valid = re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date)
+        if not date:
+            raise ValueNotProvidedError(message='date parameter not provided')
+
+        is_valid = is_valid_date(date)
         if not is_valid:
             raise Warning('Invalid format')
 
@@ -56,6 +66,9 @@ class AwsS3ApiGoes16(AwsS3Api):
 
     @data_variable.setter
     def data_variable(self, value):
+        if not value:
+            raise ValueNotProvidedError(message='value parameter not provided')
+
         self.__data_variable = value
 
     def authenticate(self, access_key, secret_key):
@@ -67,9 +80,18 @@ class AwsS3ApiGoes16(AwsS3Api):
     def list_files(self):
         self._s3_client.list_files(self.remote_bucket, self.local_bucket)
 
-    def get_file(self, filename):
-        year = get_year(self.__initial_date)
-        hour = get_hour(self.__initial_date)
-        day_of_year = convert_date_to_day_of_year(self.__initial_date)
-        self._s3_client.get_file(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}', filename)
+    def get_file(self, filename, datetime):
+        is_valid = is_valid_date(datetime)
+        if not is_valid:
+            raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')
 
+        formatted_date = convert_to_date(datetime)
+        year = get_year(formatted_date)
+        hour = get_hour(formatted_date)
+        day_of_year = convert_date_to_day_of_year(formatted_date)
+
+        try:
+            self._s3_client.get_file(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}',
+                                     filename)
+        except Warning as err:
+            print(f'An error has occurred: {err}')

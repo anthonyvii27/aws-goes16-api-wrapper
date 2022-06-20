@@ -1,4 +1,9 @@
 from datetime import datetime
+import re
+
+
+def is_valid_date(date):
+    return re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date)
 
 
 def convert_to_date(str_datetime):

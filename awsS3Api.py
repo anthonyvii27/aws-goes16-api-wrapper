@@ -46,5 +46,5 @@ class AwsS3Api(ABC):
         pass
 
     @abstractmethod
-    def get_file(self, filename):
+    def get_file(self, filename, datetime):
         pass
