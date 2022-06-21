@@ -10,6 +10,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         self.__initial_date = ''
         self.__due_date = ''
         self.__data_variable = ''
+        self.__lat_long_coords = dict(zip(['n_lat', 's_lat', 'w_lon', 'e_lon'], ['', '', '', '']))
 
     @property
     def product(self):
@@ -26,6 +27,10 @@ class AwsS3ApiGoes16(AwsS3Api):
     @property
     def data_variable(self):
         return self.__data_variable
+
+    @property
+    def lat_long_coords(self):
+        return self.__lat_long_coords
 
     @product.setter
     def product(self, product_name):
@@ -70,6 +75,18 @@ class AwsS3ApiGoes16(AwsS3Api):
             raise ValueNotProvidedError(message='value parameter not provided')
 
         self.__data_variable = value
+
+    @lat_long_coords.setter
+    def lat_long_coords(self, coords):
+        if type(coords) != 'dict':
+            raise Warning('The entered format is invalid. The accepted format is a dictionary with the structure: {'
+                          '\'n_lat\': value, \'s_lat\': value, \'w_lon\': value, \'e_lon\': value }')
+
+        for coord_type, value in coords.items():
+            if not value or type(value) != 'float' or type(value) != 'int':
+                raise Warning(f'The value entered for the attribute {coord_type} is invalid')
+
+        self.__lat_long_coords = coords
 
     def authenticate(self, access_key, secret_key):
         self._s3_client.authenticate(access_key, secret_key)
