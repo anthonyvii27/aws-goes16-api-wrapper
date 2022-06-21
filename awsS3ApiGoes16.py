@@ -6,6 +6,19 @@ from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_ho
 
 
 class AwsS3ApiGoes16(AwsS3Api):
+    __product_list = ['ABI-L1b-RadF', 'ABI-L1b-RadC', 'ABI-L1b-RadM', 'ABI-L2-ACHAC', 'ABI-L2-ACHAF', 'ABI-L2-ACHAM',
+                      'ABI-L2-ACHTF', 'ABI-L2-ACHTM', 'ABI-L2-ACMC', 'ABI-L2-ACMF', 'ABI-L2-ACMM', 'ABI-L2-ACTPC',
+                      'ABI-L2-ACTPF', 'ABI-L2-ACTPM', 'ABI-L2-ADPC', 'ABI-L2-ADPF', 'ABI-L2-ADPM', 'ABI-L2-AODC',
+                      'ABI-L2-AODF', 'ABI-L2-CMIPC', 'ABI-L2-CMIPF', 'ABI-L2-CMIPM', 'ABI-L2-CODC', 'ABI-L2-CODF',
+                      'ABI-L2-CPSC', 'ABI-L2-CPSF', 'ABI-L2-CPSM', 'ABI-L2-CTPC', 'ABI-L2-CTPF', 'ABI-L2-DMWC',
+                      'ABI-L2-DMWF', 'ABI-L2-DMWM', 'ABI-L2-DSIC', 'ABI-L2-DSIF', 'ABI-L2-DSIM', 'ABI-L2-DSRC',
+                      'ABI-L2-DSRF', 'ABI-L2-DSRM', 'ABI-L2-FDCC', 'ABI-L2-FDCF', 'ABI-L2-LSTC', 'ABI-L2-LSTF',
+                      'ABI-L2-LSTM', 'ABI-L2-LVMPC', 'ABI-L2-LVMPF', 'ABI-L2-LVMPM', 'ABI-L2-LVTPC', 'ABI-L2-LVTPF',
+                      'ABI-L2-LVTPM', 'ABI-L2-MCMIPC', 'ABI-L2-MCMIPF', 'ABI-L2-MCMIPM', 'ABI-L2-RRQPEF', 'ABI-L2-RSRC',
+                      'ABI-L2-RSRF', 'ABI-L2-SSTF', 'ABI-L2-TPWC', 'ABI-L2-TPWF', 'ABI-L2-TPWM', 'ABI-L2-VAAF',
+                      'GLM-L2-LCFA', 'SUVI-L1b-Fe093', 'SUVI-L1b-Fe131', 'SUVI-L1b-Fe171', 'SUVI-L1b-Fe195',
+                      'SUVI-L1b-Fe284', 'SUVI-L1b-He303']
+
     def __init__(self, s3_client_name='s3fs'):
         super().__init__(s3_client_name, remote_bucket='noaa-goes16')
         self.__product = 'GLM-L2-LCFA'
@@ -38,6 +51,11 @@ class AwsS3ApiGoes16(AwsS3Api):
     def product(self, product_name):
         if not product_name:
             raise ValueNotProvidedError(message='product_name parameter not provided')
+
+        upper_product_name = product_name.upper()
+        is_valid = upper_product_name in self.__product_list
+        if not is_valid:
+            raise Warning('Invalid product')
 
         self.__product = product_name
 
@@ -121,6 +139,16 @@ class AwsS3ApiGoes16(AwsS3Api):
             return
 
         self._s3_client.list_files(self.remote_bucket, self.local_bucket)
+
+    def list_products(self):
+        """
+        Displays the list of NOAA GOES 16 products
+
+        :return: void
+        """
+        print(f'----------- PRODUCTS -----------\nSee more: https://docs.opendata.aws/noaa-goes16/cics-readme.html')
+        for product in self.__product_list:
+            print(f'-  {product}')
 
     def get_file(self, filename, datetime):
         """

@@ -31,11 +31,11 @@ class S3fsS3Client(S3Client):
         if not local_bucket_path:
             raise ValueNotProvidedError(message='local_bucket_path parameter not provided')
 
-        print(f'----------- LOCAL -----------\n- {local_bucket_path}\n')
+        print(f'----------- LOCAL -----------\n-  {local_bucket_path}\n')
         print('----------- REMOTE -----------')
 
         if remote_bucket_path:
-            print(f'- {remote_bucket_path}')
+            print(f'-  {remote_bucket_path}')
 
         # TODO - Implements bucket listing by s3fs
         if self.__is_authenticated:

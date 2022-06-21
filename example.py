@@ -31,6 +31,10 @@ apiGoes.list_files(bucket_name="local")
 
 print('\n')
 
+apiGoes.list_products()
+
+print('\n')
+
 lat_long = {'n_lat': -22.768942, 's_lat': -23.082616, 'w_lon': -43.823426, 'e_lon': -43.154634}
 apiGoes.lat_long_coords = lat_long
 print(apiGoes.lat_long_coords)
