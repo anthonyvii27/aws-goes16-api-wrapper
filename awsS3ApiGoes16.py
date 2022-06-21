@@ -1,3 +1,5 @@
+import numbers
+
 from awsS3Api import AwsS3Api
 from exceptions import ValueNotProvidedError
 from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour, is_valid_date
@@ -78,12 +80,12 @@ class AwsS3ApiGoes16(AwsS3Api):
 
     @lat_long_coords.setter
     def lat_long_coords(self, coords):
-        if type(coords) != 'dict':
+        if not isinstance(coords, dict):
             raise Warning('The entered format is invalid. The accepted format is a dictionary with the structure: {'
-                          '\'n_lat\': value, \'s_lat\': value, \'w_lon\': value, \'e_lon\': value }')
+                          '\'n_lat\': value, \'s_lat\': value, \'w_lon\': value, \'e_lon\': value}')
 
         for coord_type, value in coords.items():
-            if not value or type(value) != 'float' or type(value) != 'int':
+            if not value or not isinstance(value, numbers.Number):
                 raise Warning(f'The value entered for the attribute {coord_type} is invalid')
 
         self.__lat_long_coords = coords

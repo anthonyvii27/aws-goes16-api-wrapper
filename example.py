@@ -1,8 +1,8 @@
 from awsS3ApiGoes16 import AwsS3ApiGoes16
 
 apiGoes = AwsS3ApiGoes16()
-apiGoes.product = 'GLM-L2-LCFA'
-
+# apiGoes.product = 'GLM-L2-LCFA'
+#
 # print(f'Remote bucket: {apiGoes.remote_bucket}')
 # print(f'Local bucket: {apiGoes.local_bucket}')
 # print(f'Product: {apiGoes.product}')
@@ -26,9 +26,13 @@ apiGoes.product = 'GLM-L2-LCFA'
 # apiGoes.list_buckets()
 #
 # print('\n')
+#
+# apiGoes.list_files(bucket_name="local")
+#
+# print('\n')
 
-apiGoes.list_files(bucket_name="local")
-
-print('\n')
+lat_long = {'n_lat': -22.768942, 's_lat': -23.082616, 'w_lon': -43.823426, 'e_lon': -43.154634}
+apiGoes.lat_long_coords = lat_long
+print(apiGoes.lat_long_coords)
 
 # apiGoes.get_file(filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
