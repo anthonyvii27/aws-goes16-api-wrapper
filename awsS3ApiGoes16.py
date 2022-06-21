@@ -77,7 +77,11 @@ class AwsS3ApiGoes16(AwsS3Api):
     def list_buckets(self):
         self._s3_client.list_buckets(self.remote_bucket, self.local_bucket)
 
-    def list_files(self):
+    def list_files(self, bucket_name=""):
+        if bucket_name == "local" or bucket_name == self.local_bucket:
+            self._s3_client.list_files(bucket_name, self.local_bucket)
+            pass
+
         self._s3_client.list_files(self.remote_bucket, self.local_bucket)
 
     def get_file(self, filename, datetime):

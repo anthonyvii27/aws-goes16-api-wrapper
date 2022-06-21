@@ -22,12 +22,14 @@ class AwsS3Api(ABC):
     def remote_bucket(self, bucket_name):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
+
         self.__remote_bucket = bucket_name
 
     @local_bucket.setter
     def local_bucket(self, bucket_name):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
+
         if bucket_name == '/':
             self.__local_bucket = os.getcwd()
         else:
@@ -42,7 +44,7 @@ class AwsS3Api(ABC):
         pass
 
     @abstractmethod
-    def list_files(self):
+    def list_files(self, bucket_name):
         pass
 
     @abstractmethod
