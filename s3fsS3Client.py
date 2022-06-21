@@ -1,3 +1,5 @@
+import xarray as xr
+import numpy as np
 import s3fs
 import os
 
@@ -53,8 +55,7 @@ class S3fsS3Client(S3Client):
             dir_list = os.listdir(local_bucket_path)
             for file in dir_list:
                 print(f'-  {file}')
-
-            exit()
+            return
 
         try:
             print(f'----------- FILES -----------\nPath: s3://{bucket_name}\n')
@@ -62,13 +63,19 @@ class S3fsS3Client(S3Client):
 
             if len(files) == 0:
                 print(f'the bucket {bucket_name} hasn\'\t files to list')
-                exit()
+                return
 
             for file in files:
-                print(file)
+                print(f'-  {file}')
 
         except Warning as err:
             print(f'Error: {err}')
+
+    def filter_coordinates(ds: xr.Dataset, coords):
+        return ds['event_energy'].where(
+            (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &
+            (ds['event_lon'] >= coords['w_lon']) & (ds['event_lon'] <= coords['e_lon']),
+            drop=True)
 
     def get_file(self, remote_bucket_path, filename):
         self.client.get(remote_bucket_path, filename)

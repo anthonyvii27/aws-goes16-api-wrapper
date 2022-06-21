@@ -99,7 +99,7 @@ class AwsS3ApiGoes16(AwsS3Api):
     def list_files(self, bucket_name=""):
         if bucket_name == "local" or bucket_name == self.local_bucket:
             self._s3_client.list_files(bucket_name, self.local_bucket)
-            pass
+            return
 
         self._s3_client.list_files(self.remote_bucket, self.local_bucket)
 
