@@ -91,12 +91,31 @@ class AwsS3ApiGoes16(AwsS3Api):
         self.__lat_long_coords = coords
 
     def authenticate(self, access_key, secret_key):
+        """
+        Allows performing authentication using the defined s3 bucket and thus making requests to private buckets to
+        which the logged-in user has access
+
+        :param access_key: AWS access key credential
+        :param secret_key: AWS secret key credential
+        :return: void
+        """
         self._s3_client.authenticate(access_key, secret_key)
 
     def list_buckets(self):
+        """
+        Displays the list of available buckets using the defined s3 client
+
+        :return: void
+        """
         self._s3_client.list_buckets(self.remote_bucket, self.local_bucket)
 
     def list_files(self, bucket_name=""):
+        """
+        Displays the list of files present inside the defined bucket, which can be local or remote
+
+        :param bucket_name: S3 bucket name
+        :return: void
+        """
         if bucket_name == "local" or bucket_name == self.local_bucket:
             self._s3_client.list_files(bucket_name, self.local_bucket)
             return
@@ -104,6 +123,13 @@ class AwsS3ApiGoes16(AwsS3Api):
         self._s3_client.list_files(self.remote_bucket, self.local_bucket)
 
     def get_file(self, filename, datetime):
+        """
+        Download the specified file to the defined local bucket
+
+        :param filename: File name to download
+        :param datetime: Datetime in format yyyy-mm-dd HH
+        :return: void
+        """
         is_valid = is_valid_date(datetime)
         if not is_valid:
             raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')

@@ -9,13 +9,13 @@ from exceptions import ValueNotProvidedError
 class Boto3S3Client(S3Client):
     def __init__(self):
         super().__init__()
-        self.is_authenticated = False
-        self.client = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+        self.__is_authenticated = False
+        self.__client = boto3.client('s3', config=Config(signature_version=UNSIGNED))
 
     def authenticate(self, access_key, secret_key):
         try:
-            self.client = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
-            self.is_authenticated = True
+            self.__client = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+            self.__is_authenticated = True
         except Warning as err:
             print(f'Error: {err}')
 
@@ -26,8 +26,8 @@ class Boto3S3Client(S3Client):
         if remote_bucket_path:
             print(f'- {remote_bucket_path}')
 
-        if self.is_authenticated:
-            remote_buckets = self.client.list_buckets()
+        if self.__is_authenticated:
+            remote_buckets = self.__client.list_buckets()
             print(f'- {remote_buckets}')
 
     def list_files(self, bucket_name, local_bucket_path):
@@ -39,7 +39,7 @@ class Boto3S3Client(S3Client):
             pass
 
         try:
-            for file in self.client.list_objects_v2(
+            for file in self.__client.list_objects_v2(
                     Bucket=bucket_name,
                     Prefix='',
                     Delimiter=''

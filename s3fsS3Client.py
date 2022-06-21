@@ -8,8 +8,8 @@ from exceptions import ValueNotProvidedError
 class S3fsS3Client(S3Client):
     def __init__(self):
         super().__init__()
-        self.is_authenticated = False
-        self.client = s3fs.S3FileSystem(anon=True)
+        self.__is_authenticated = False
+        self.__client = s3fs.S3FileSystem(anon=True)
 
     def authenticate(self, access_key, secret_key):
         if not access_key:
@@ -19,8 +19,8 @@ class S3fsS3Client(S3Client):
             raise ValueNotProvidedError(message='secret_key parameter not provided')
 
         try:
-            self.client = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
-            self.is_authenticated = True
+            self.__client = s3fs.S3FileSystem(anon=False, key=access_key, secret=secret_key)
+            self.__is_authenticated = True
         except Warning:
             print('unable to authenticate')
 
@@ -38,7 +38,7 @@ class S3fsS3Client(S3Client):
             print(f'- {remote_bucket_path}')
 
         # TODO - Implements bucket listing by s3fs
-        if self.is_authenticated:
+        if self.__is_authenticated:
             pass
 
     def list_files(self, bucket_name, local_bucket_path):
@@ -57,7 +57,7 @@ class S3fsS3Client(S3Client):
 
         try:
             print(f'----------- FILES -----------\nPath: s3://{bucket_name}\n')
-            files = self.client.ls(f's3://{bucket_name}')
+            files = self.__client.ls(f's3://{bucket_name}')
 
             if len(files) == 0:
                 print(f'the bucket {bucket_name} hasn\'\t files to list')
@@ -70,4 +70,4 @@ class S3fsS3Client(S3Client):
             print(f'Error: {err}')
 
     def get_file(self, remote_bucket_path, filename):
-        self.client.get(remote_bucket_path, filename)
+        self.__client.get(remote_bucket_path, filename)
