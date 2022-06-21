@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from s3ClientFactory import S3ClientFactory
 from exceptions import ValueNotProvidedError
 import os
@@ -6,7 +6,7 @@ import os
 
 class AwsS3Api(ABC):
     def __init__(self, s3_client_name, remote_bucket='', local_bucket=os.getcwd()):
-        self.s3_client = S3ClientFactory.create(s3_client_name)
+        self._s3_client = S3ClientFactory.create(s3_client_name)
         self.__remote_bucket = remote_bucket
         self.__local_bucket = local_bucket
 
@@ -22,13 +22,31 @@ class AwsS3Api(ABC):
     def remote_bucket(self, bucket_name):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
+
         self.__remote_bucket = bucket_name
 
     @local_bucket.setter
     def local_bucket(self, bucket_name):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
+
         if bucket_name == '/':
             self.__local_bucket = os.getcwd()
         else:
             self.__local_bucket = bucket_name
+
+    @abstractmethod
+    def authenticate(self, access_key, secret_key):
+        pass
+
+    @abstractmethod
+    def list_buckets(self):
+        pass
+
+    @abstractmethod
+    def list_files(self, bucket_name):
+        pass
+
+    @abstractmethod
+    def get_file(self, filename, datetime):
+        pass
