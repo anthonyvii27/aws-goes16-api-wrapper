@@ -50,3 +50,7 @@ class AwsS3Api(ABC):
     @abstractmethod
     def get_file(self, filename, datetime):
         pass
+
+    @abstractmethod
+    def get_file_metadata(self, filename, datetime):
+        pass

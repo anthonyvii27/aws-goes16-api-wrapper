@@ -20,3 +20,7 @@ class S3Client(ABC):
     @abstractmethod
     def get_file(self, remote_bucket_path, filename):
         pass
+
+    @abstractmethod
+    def get_file_metadata(self, remote_bucket_path, filename):
+        pass

@@ -4,7 +4,6 @@ from awsS3Api import AwsS3Api
 from exceptions import ValueNotProvidedError
 from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour, is_valid_date
 
-
 class AwsS3ApiGoes16(AwsS3Api):
     def __init__(self, s3_client_name='s3fs'):
         super().__init__(s3_client_name, remote_bucket='noaa-goes16')
@@ -45,10 +44,6 @@ class AwsS3ApiGoes16(AwsS3Api):
     def initial_date(self, date):
         if not date:
             raise ValueNotProvidedError(message='date parameter not provided')
-
-        is_valid = is_valid_date(date)
-        if not is_valid:
-            raise Warning('Invalid format')
 
         self.__initial_date = convert_to_date(date)
 
@@ -142,5 +137,27 @@ class AwsS3ApiGoes16(AwsS3Api):
         try:
             self._s3_client.get_file(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}',
                                      filename)
+        except Warning as err:
+            print(f'An error has occurred: {err}')
+    
+    def get_file_metadata(self, filename, datetime):
+        """
+        Get the specified file's metadata
+
+        :param filename: File name to download
+        :param datetime: Datetime in format yyyy-mm-dd HH
+        :return: object
+        """
+        is_valid = is_valid_date(datetime)
+        if not is_valid:
+            raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')
+
+        formatted_date = convert_to_date(datetime)
+        year = get_year(formatted_date)
+        hour = get_hour(formatted_date)
+        day_of_year = convert_date_to_day_of_year(formatted_date)
+
+        try:
+            return self._s3_client.get_file_metadata(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}')
         except Warning as err:
             print(f'An error has occurred: {err}')

@@ -71,3 +71,11 @@ class S3fsS3Client(S3Client):
 
     def get_file(self, remote_bucket_path, filename):
         self.__client.get(remote_bucket_path, filename)
+
+    def get_file_metadata(self, remote_bucket_path):
+        try:
+            with self.__client.open(remote_bucket_path, 'rb') as file:
+                return file.metadata()
+
+        except Warning as err:
+            print(f'Error: {err}')
