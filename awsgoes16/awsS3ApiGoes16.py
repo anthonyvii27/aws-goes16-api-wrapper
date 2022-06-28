@@ -150,7 +150,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         for product in self.__product_list:
             print(f'-  {product}')
 
-    def get_file(self, filename, datetime):
+    def get_file(self, datetime, filename):
         """
         Download the specified file to the defined local bucket
 
@@ -168,7 +168,10 @@ class AwsS3ApiGoes16(AwsS3Api):
         day_of_year = convert_date_to_day_of_year(formatted_date)
 
         try:
-            self._s3_client.get_file(f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}/{filename}',
-                                     filename)
+            self._s3_client.get_file(
+                self.local_bucket,
+                path=f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}',
+                filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc'
+            )
         except Warning as err:
             print(f'An error has occurred: {err}')

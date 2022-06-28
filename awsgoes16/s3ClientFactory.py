@@ -1,4 +1,4 @@
-from boto3S3Client import Boto3S3Client
+from awsgoes16.boto3S3Client import Boto3S3Client
 from s3fsS3Client import S3fsS3Client
 
 

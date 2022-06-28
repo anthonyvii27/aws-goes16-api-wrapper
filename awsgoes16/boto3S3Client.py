@@ -49,5 +49,5 @@ class Boto3S3Client(S3Client):
         except Warning as err:
             print(f'Error: {err}')
 
-    def get_file(self, remote_bucket_path, filename):
+    def get_file(self, local_bucket, filename):
         pass
