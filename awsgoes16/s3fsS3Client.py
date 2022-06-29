@@ -1,8 +1,9 @@
 import s3fs
 import os
+import xarray as xr
 
 from s3Client import S3Client
-from exceptions import ValueNotProvidedError
+from awsgoes16.exceptions import ValueNotProvidedError
 
 
 class S3fsS3Client(S3Client):
@@ -31,11 +32,11 @@ class S3fsS3Client(S3Client):
         if not local_bucket_path:
             raise ValueNotProvidedError(message='local_bucket_path parameter not provided')
 
-        print(f'----------- LOCAL -----------\n- {local_bucket_path}\n')
+        print(f'----------- LOCAL -----------\n-  {local_bucket_path}\n')
         print('----------- REMOTE -----------')
 
         if remote_bucket_path:
-            print(f'- {remote_bucket_path}')
+            print(f'-  {remote_bucket_path}')
 
         # TODO - Implements bucket listing by s3fs
         if self.__is_authenticated:
@@ -69,5 +70,14 @@ class S3fsS3Client(S3Client):
         except Warning as err:
             print(f'Error: {err}')
 
-    def get_file(self, remote_bucket_path, filename):
-        self.__client.get(remote_bucket_path, filename)
+    def get_file(self, local_bucket, path, filename):
+        with open(f'{local_bucket}/{filename}', 'w') as f:
+            with self.__client.open(f'{path}/{filename}', 'rb') as file:
+                ds = xr.open_dataset(file)
+                ds_filtered = (ds['event_energy'].where(
+                    (ds['event_lat'] >= -24.0) & (ds['event_lat'] <= -22.5) &
+                    (ds['event_lon'] >= -43.8) & (ds['event_lon'] <= -43.0),
+                    drop=True))
+                f.write(str(ds_filtered))
+                file.close()
+            f.close()
