@@ -42,7 +42,7 @@ class S3fsS3Client(S3Client):
         if self.__is_authenticated:
             pass
 
-    def list_files(self, bucket_name, local_bucket_path):
+    def list_bucket_files(self, bucket_name, local_bucket_path):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
 
@@ -70,14 +70,51 @@ class S3fsS3Client(S3Client):
         except Warning as err:
             print(f'Error: {err}')
 
-    def get_file(self, local_bucket, path, filename):
-        with open(f'{local_bucket}/{filename}', 'w') as f:
-            with self.__client.open(f'{path}/{filename}', 'rb') as file:
-                ds = xr.open_dataset(file)
-                ds_filtered = (ds['event_energy'].where(
-                    (ds['event_lat'] >= -24.0) & (ds['event_lat'] <= -22.5) &
-                    (ds['event_lon'] >= -43.8) & (ds['event_lon'] <= -43.0),
-                    drop=True))
-                f.write(str(ds_filtered))
-                file.close()
-            f.close()
+    def list_files_by_path(self, path):
+        files = self.__client.ls(path)
+        return files
+
+    def get_file(self, local_bucket, filename, path, coords):
+        if not filename:
+            raise ValueNotProvidedError('Error: Filename not provided')
+
+        if not path:
+            raise ValueNotProvidedError('Error: Path not provided')
+
+        if not coords['n_lat']:
+            raise ValueNotProvidedError('It is necessary to provide the value referring to north latitude: n_lat')
+
+        if not coords['s_lat']:
+            raise ValueNotProvidedError('It is necessary to provide the value referring to south latitude: s_lat')
+
+        if not coords['e_lon']:
+            raise ValueNotProvidedError('It is necessary to provide the value referring to east longitude: e_lon')
+
+        if not coords['w_lon']:
+            raise ValueNotProvidedError('It is necessary to provide the value referring to west latitude: w_lon')
+
+        path_to_save_file = f'{local_bucket}/{path.split("/")[2]}/{path.split("/")[3]}'
+        if not os.path.isdir(path_to_save_file):
+            os.makedirs(path_to_save_file)
+
+            # with open(f'{path_to_save_file}/{filename}', 'w') as f:
+        with self.__client.open(f'{path}/{filename}', 'rb') as file:
+            ds = xr.open_dataset(file)
+
+            ds = (ds['event_energy'].where(
+                (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &
+                (ds['event_lon'] >= coords['w_lon']) & (ds['event_lon'] <= coords['e_lon']),
+                drop=True))
+
+            df = ds.to_dataframe()
+            df.drop(df.columns[4:-1], axis=1, inplace=True)
+            df.drop(df.columns[0], axis=1, inplace=True)
+            df.rename(columns={'event_time_offset': 'time',
+                               'event_lat': 'lat',
+                               'event_lon': 'lon',
+                               'event_energy': 'energy'},
+                      inplace=True)
+            df.set_index('time', inplace=True)
+
+            df.to_csv(f'{path_to_save_file}/{filename[:-3]}.csv')
+            file.close()

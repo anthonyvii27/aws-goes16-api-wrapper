@@ -1,8 +1,11 @@
 import numbers
 
+import numpy as np
+
 from awsS3Api import AwsS3Api
 from exceptions import ValueNotProvidedError
-from utils import convert_to_date, convert_date_to_day_of_year, get_year, get_hour, is_valid_date
+from utils import convert_to_datetime, convert_date_to_day_of_year, get_year, get_hour, is_valid_datetime, \
+    is_valid_date, convert_to_date
 
 
 class AwsS3ApiGoes16(AwsS3Api):
@@ -64,22 +67,22 @@ class AwsS3ApiGoes16(AwsS3Api):
         if not date:
             raise ValueNotProvidedError(message='date parameter not provided')
 
-        is_valid = is_valid_date(date)
+        is_valid = is_valid_datetime(date)
         if not is_valid:
             raise Warning('Invalid format')
 
-        self.__initial_date = convert_to_date(date)
+        self.__initial_date = convert_to_datetime(date)
 
     @due_date.setter
     def due_date(self, date):
         if not date:
             raise ValueNotProvidedError(message='date parameter not provided')
 
-        is_valid = is_valid_date(date)
+        is_valid = is_valid_datetime(date)
         if not is_valid:
             raise Warning('Invalid format')
 
-        formatted_date = convert_to_date(date)
+        formatted_date = convert_to_datetime(date)
 
         if not self.__initial_date:
             self.__due_date = formatted_date
@@ -127,7 +130,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         """
         self._s3_client.list_buckets(self.remote_bucket, self.local_bucket)
 
-    def list_files(self, bucket_name=""):
+    def list_bucket_files(self, bucket_name=""):
         """
         Displays the list of files present inside the defined bucket, which can be local or remote
 
@@ -135,10 +138,10 @@ class AwsS3ApiGoes16(AwsS3Api):
         :return: void
         """
         if bucket_name == "local" or bucket_name == self.local_bucket:
-            self._s3_client.list_files(bucket_name, self.local_bucket)
+            self._s3_client.list_bucket_files(bucket_name, self.local_bucket)
             return
 
-        self._s3_client.list_files(self.remote_bucket, self.local_bucket)
+        self._s3_client.list_bucket_files(self.remote_bucket, self.local_bucket)
 
     def list_products(self):
         """
@@ -158,11 +161,11 @@ class AwsS3ApiGoes16(AwsS3Api):
         :param datetime: Datetime in format yyyy-mm-dd HH
         :return: void
         """
-        is_valid = is_valid_date(datetime)
-        if not is_valid:
-            raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')
+        # is_valid = is_valid_datetime(datetime)
+        # if not is_valid:
+        #     raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')
 
-        formatted_date = convert_to_date(datetime)
+        formatted_date = convert_to_datetime(datetime)
         year = get_year(formatted_date)
         hour = get_hour(formatted_date)
         day_of_year = convert_date_to_day_of_year(formatted_date)
@@ -171,7 +174,37 @@ class AwsS3ApiGoes16(AwsS3Api):
             self._s3_client.get_file(
                 self.local_bucket,
                 path=f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}',
-                filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc'
+                filename=filename,
+                coords=self.__lat_long_coords
             )
         except Warning as err:
             print(f'An error has occurred: {err}')
+
+    def get_all_files_one_day(self, date, logs=True):
+        """
+            Download the specified file to the defined local bucket
+
+            :param logs:
+            :param date: Datetime in format yyyy-mm-dd HH
+            :return: void
+        """
+        is_valid = is_valid_date(date)
+        if not is_valid:
+            raise Warning('The "date" parameter has an invalid format. The accepted format is "yyyy-mm-dd"')
+
+        formatted_date = convert_to_date(date)
+        year = get_year(formatted_date)
+        day_of_year = convert_date_to_day_of_year(formatted_date)
+
+        for i in range(24):
+            files = np.array(self._s3_client.list_files_by_path(path=f'noaa-goes16/{self.__product}/{year}/{day_of_year}/{i}'))
+
+            try:
+                for file in files:
+                    filename = file.split('/')[-1]
+                    if logs:
+                        print(f'Downloading file: {filename}')
+                    self.get_file(filename=filename, datetime=f'{date} {i}')
+            except ValueError:
+                pass
+

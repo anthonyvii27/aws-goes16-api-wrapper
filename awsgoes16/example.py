@@ -21,23 +21,27 @@ print(f'New local bucket: {apiGoes.local_bucket}')
 apiGoes.local_bucket = '/'
 print(f'New local bucket from alias: {apiGoes.local_bucket}')
 
-print('\n')
-
-apiGoes.list_buckets()
+apiGoes.local_bucket = '/Users/anthonysilva/Development/github/aws-goes16-api-wrapper/tmp'
 
 print('\n')
 
-apiGoes.list_files(bucket_name="local")
+# apiGoes.list_buckets()
 
 print('\n')
 
-apiGoes.list_products()
+# apiGoes.list_bucket_files(bucket_name="local")
 
 print('\n')
 
-lat_long = {'n_lat': -22.768942, 's_lat': -23.082616, 'w_lon': -43.823426, 'e_lon': -43.154634}
+# apiGoes.list_products()
+
+print('\n')
+
+lat_long = {'n_lat': -22.5, 's_lat': -24.0, 'w_lon': -43.8, 'e_lon': -43.0}
 apiGoes.lat_long_coords = lat_long
 print(apiGoes.lat_long_coords)
 
-apiGoes.get_file(datetime='2019-04-08 18', filename='OR_GLM-L2'
-                                                    '-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
+# apiGoes.get_file(datetime='2019-04-08 18', filename='OR_GLM-L2'
+#                                                     '-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
+
+apiGoes.get_all_files_one_day('2019-04-08')

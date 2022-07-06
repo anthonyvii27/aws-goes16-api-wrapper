@@ -2,17 +2,37 @@ from datetime import datetime
 import re
 
 
-def is_valid_date(date):
+def is_valid_date(str_date):
     """
     Checks if the entered date is valid
 
-    :param date: Date in string format
+    :param str_date: Date in string format
     :return: bool
     """
-    return bool(re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', date))
+    return bool(re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$', str_date))
+
+
+def is_valid_datetime(str_datetime):
+    """
+    Checks if the entered datetime is valid
+
+    :param str_datetime: Date in string format
+    :return: bool
+    """
+    return bool(re.match(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s([0-2]\d)$', str_datetime))
 
 
 def convert_to_date(str_datetime):
+    """
+    Converts a string date to date
+
+    :param str_datetime: Convert the date in string format to date
+    :return: date
+    """
+    return datetime.strptime(str_datetime, '%Y-%m-%d')
+
+
+def convert_to_datetime(str_datetime):
     """
     Converts a string date to datetime
 

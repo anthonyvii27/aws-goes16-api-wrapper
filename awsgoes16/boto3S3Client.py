@@ -30,7 +30,7 @@ class Boto3S3Client(S3Client):
             remote_buckets = self.__client.list_buckets()
             print(f'- {remote_buckets}')
 
-    def list_files(self, bucket_name, local_bucket_path):
+    def list_bucket_files(self, bucket_name, local_bucket_path):
         if not bucket_name:
             raise ValueNotProvidedError(message='bucket name not provided')
 
