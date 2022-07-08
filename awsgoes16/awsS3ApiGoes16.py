@@ -1,4 +1,5 @@
 import numbers
+import os
 
 import numpy as np
 
@@ -210,8 +211,17 @@ class AwsS3ApiGoes16(AwsS3Api):
                 pass
 
     def get_all_files_from_the_last(self, logs=True):
-        # Abre a pasta local
-        # Abre a pasta de maior ano
-        # Pega o maior dia no ano
-        # Inicia o download os outros X dias a partir dele
-        pass
+        years = os.listdir(self.local_bucket)
+        last_year = int(max(years))
+
+        days_in_the_years = os.listdir(f'{self.local_bucket}/{last_year}')
+        last_day = max(days_in_the_years)
+
+        qty_days_in_the_year = 365
+
+        if (last_year % 4 == 0 and last_year % 100 != 0) or (last_year % 400 == 0):
+            qty_days_in_the_year += 1
+
+        for i in range(int(last_day), qty_days_in_the_year):
+            # Download dos novos arquivos
+            pass
