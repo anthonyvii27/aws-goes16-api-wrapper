@@ -1,5 +1,6 @@
 import numbers
 import os
+from datetime import datetime
 
 import numpy as np
 
@@ -205,16 +206,23 @@ class AwsS3ApiGoes16(AwsS3Api):
                 for file in files:
                     filename = file.split('/')[-1]
                     if logs:
-                        print(f'Downloading file: {filename}')
+                        print(f'Downloading file: [{day_of_year}/{year} - {i}] {filename}')
                     self.get_file(filename=filename, datetime=f'{date} {i}')
             except ValueError:
                 pass
 
     def get_all_files_from_the_last(self, logs=True):
         years = os.listdir(self.local_bucket)
+        if not years:
+            years.append('2018')
+            os.mkdir(f'{self.local_bucket}/{2018}')
+
         last_year = int(max(years))
 
         days_in_the_years = os.listdir(f'{self.local_bucket}/{last_year}')
+        if not days_in_the_years:
+            days_in_the_years.append('001')
+
         last_day = max(days_in_the_years)
 
         qty_days_in_the_year = 365
@@ -222,6 +230,10 @@ class AwsS3ApiGoes16(AwsS3Api):
         if (last_year % 4 == 0 and last_year % 100 != 0) or (last_year % 400 == 0):
             qty_days_in_the_year += 1
 
-        for i in range(int(last_day), qty_days_in_the_year):
-            # Download dos novos arquivos
-            pass
+        print('Preparing to download files...')
+        for i in range(int(last_day), qty_days_in_the_year + 1):
+            day_num = str(i)
+            day_num.rjust(3 + len(day_num), '0')
+
+            date = datetime.strptime(f'{last_year}-{day_num}', '%Y-%j').strftime('%Y-%m-%d')
+            self.get_all_files_one_day(date, logs=logs)

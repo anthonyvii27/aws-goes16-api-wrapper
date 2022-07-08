@@ -44,7 +44,7 @@ class S3fsS3Client(S3Client):
 
     def list_bucket_files(self, bucket_name, local_bucket_path):
         if not bucket_name:
-            raise ValueNotProvidedError(message='bucket name not provided')
+            raise ValueNotProvidedError(message='bucket_name not provided')
 
         if not local_bucket_path:
             raise ValueNotProvidedError(message='local_bucket_path parameter not provided')
