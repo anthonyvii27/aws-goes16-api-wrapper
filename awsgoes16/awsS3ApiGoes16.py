@@ -197,7 +197,8 @@ class AwsS3ApiGoes16(AwsS3Api):
         day_of_year = convert_date_to_day_of_year(formatted_date)
 
         for i in range(24):
-            files = np.array(self._s3_client.list_files_by_path(path=f'noaa-goes16/{self.__product}/{year}/{day_of_year}/{i}'))
+            files = np.array(
+                self._s3_client.list_files_by_path(path=f'noaa-goes16/{self.__product}/{year}/{day_of_year}/{i}'))
 
             try:
                 for file in files:
@@ -208,3 +209,9 @@ class AwsS3ApiGoes16(AwsS3Api):
             except ValueError:
                 pass
 
+    def get_all_files_from_the_last(self, logs=True):
+        # Abre a pasta local
+        # Abre a pasta de maior ano
+        # Pega o maior dia no ano
+        # Inicia o download os outros X dias a partir dele
+        pass
