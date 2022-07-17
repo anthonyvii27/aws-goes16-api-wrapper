@@ -8,11 +8,6 @@
     * [Uso via CLI](#instalacao-cli)
   * [Exemplos](#exemplos)
 * [Documentação](#documentacao)
-* [Contribuição](#contribuicao)
-* [Código de conduta](#codigo-conduta)
-* [Guia de contribuição](#guia-contribuicao)
-* [Good First Issue](#good-first-issue)
-* [License](#license)
 
 <a id="guia-inicial"></a>
 ## Guia inicial
@@ -141,20 +136,4 @@ awsgoes16 get_all_files_one_day -d 2019-04-08 -l False
 
 <a id="documentacao"></a>
 ## Documentação
-Coming soon
-
-<a id="contribuicao"></a>
-## Contribuição
-Coming soon
-
-<a id="codigo-conduta"></a>
-### [Código de Conduta](#)
-
-<a id="guia-contribuicao"></a>
-### [Guia de Contribuição](#)
-
-<a id="good-first-issue"></a>
-### Good First Issue
-
-<a id="license"></a>
-### License
+Você pode encontrar toda a documentação deste projeto dentro da pasta [docs](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs).
