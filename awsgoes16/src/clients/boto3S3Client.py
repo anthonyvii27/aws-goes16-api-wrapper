@@ -2,8 +2,8 @@ import boto3
 from botocore import UNSIGNED
 from botocore.client import Config
 
-from s3Client import S3Client
-from exceptions import ValueNotProvidedError
+from awsgoes16.src.s3Client import S3Client
+from awsgoes16.src.exceptions import ValueNotProvidedError
 
 
 class Boto3S3Client(S3Client):
@@ -49,5 +49,8 @@ class Boto3S3Client(S3Client):
         except Warning as err:
             print(f'Error: {err}')
 
-    def get_file(self, local_bucket, filename):
+    def list_files_by_path(self, path):
+        pass
+
+    def get_file(self, local_bucket, filename, path, coords):
         pass

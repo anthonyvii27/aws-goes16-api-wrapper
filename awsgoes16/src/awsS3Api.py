@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from s3ClientFactory import S3ClientFactory
-from exceptions import ValueNotProvidedError
+from .s3ClientFactory import S3ClientFactory
+from .exceptions import ValueNotProvidedError
 import os
 
 

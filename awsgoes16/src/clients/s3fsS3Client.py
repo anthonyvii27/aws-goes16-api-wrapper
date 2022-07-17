@@ -2,8 +2,8 @@ import s3fs
 import os
 import xarray as xr
 
-from s3Client import S3Client
-from awsgoes16.exceptions import ValueNotProvidedError
+from awsgoes16.src.s3Client import S3Client
+from awsgoes16.src.exceptions import ValueNotProvidedError
 
 
 class S3fsS3Client(S3Client):

@@ -1,4 +1,4 @@
-from awsS3ApiGoes16 import AwsS3ApiGoes16
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
 
 apiGoes = AwsS3ApiGoes16()
 apiGoes.product = 'GLM-L2-LCFA'

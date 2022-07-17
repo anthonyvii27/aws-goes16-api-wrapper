@@ -1,0 +1,3 @@
+[console_scripts]
+awsgoes16 = awsgoes16.main:main
+
