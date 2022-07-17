@@ -1,0 +1,9 @@
+README.md
+setup.py
+awsgoes16/__init__.py
+awsgoes16/main.py
+awsgoes16.egg-info/PKG-INFO
+awsgoes16.egg-info/SOURCES.txt
+awsgoes16.egg-info/dependency_links.txt
+awsgoes16.egg-info/entry_points.txt
+awsgoes16.egg-info/top_level.txt

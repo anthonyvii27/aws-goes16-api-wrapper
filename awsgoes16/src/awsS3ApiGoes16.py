@@ -71,7 +71,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('Invalid format')
+            raise Warning('The initial_date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         self.__initial_date = convert_to_datetime(date)
 
@@ -82,7 +82,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('Invalid format')
+            raise Warning('The due_date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         formatted_date = convert_to_datetime(date)
 
@@ -217,7 +217,7 @@ class AwsS3ApiGoes16(AwsS3Api):
             years.append('2018')
             os.mkdir(f'{self.local_bucket}/{2018}')
 
-        last_year = int(max(years))
+        last_year = max(years)
 
         days_in_the_years = os.listdir(f'{self.local_bucket}/{last_year}')
         if not days_in_the_years:

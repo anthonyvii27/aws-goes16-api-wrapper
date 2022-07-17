@@ -131,4 +131,108 @@ COMMANDS = [
             }
         ]
     },
+    {
+        'name': 'period',
+        'help': 'Lorem ipsum...',
+        'arguments': [
+            {
+                'name': '--initial_date',
+                'alias': '-id',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--initial_hour',
+                'alias': '-ih',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--due_date',
+                'alias': '-dd',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--due_hour',
+                'alias': '-dh',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+        ]
+    },
+    {
+        'name': 'data_variable',
+        'help': 'Lorem ipsum...',
+        'arguments': [
+            {
+                'name': '--value',
+                'alias': '-v',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            }
+        ]
+    },
+    {
+        'name': 'coords',
+        'help': 'Lorem ipsum...',
+        'arguments': [
+            {
+                'name': '--n_lat',
+                'alias': '-nl',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--s_lat',
+                'alias': '-sl',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--w_lon',
+                'alias': '-wl',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+            {
+                'name': '--e_lon',
+                'alias': '-el',
+                'help': 'Lorem ipsum...',
+                'type': str,
+                'required': False,
+                'default': '',
+            },
+        ]
+    },
+    {
+        'name': 'incremental_download',
+        'help': 'Lorem ipsum...',
+        'arguments': [
+            {
+                'name': '--logs',
+                'alias': '-l',
+                'help': 'Lorem ipsum...',
+                'type': bool,
+                'required': False,
+                'default': True,
+            }
+        ]
+    },
 ]

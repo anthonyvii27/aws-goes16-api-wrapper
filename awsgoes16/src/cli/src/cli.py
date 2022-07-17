@@ -15,7 +15,7 @@ class CLI:
         self.parser = argparse.ArgumentParser(
             prog="apigoes16",
             description="API Wrapper para download dos arquivos do satélite NOAA GOES-16",
-            epilog="Desenvolvido por: @anthonyvii27 e @mateusrlopez",
+            epilog="Developed by: @anthonyvii27 e @mateusrlopez",
             usage="%(prog)s [options]"
         )
 
@@ -49,8 +49,38 @@ class CLI:
                 if parser_args.command == 'list_bucket_files':
                     self.__api_goes.list_bucket_files(bucket_name=parser_args.bucket_name)
 
+                if parser_args.command == 'product':
+                    if parser_args.value:
+                        self.__api_goes.product = parser_args.value
+                    else:
+                        print(self.__api_goes.product)
+
                 if parser_args.command == 'list_products':
                     self.__api_goes.list_products()
+
+                if parser_args.command == 'period':
+                    if parser_args.initial_date and parser_args.due_date:
+                        self.__api_goes.initial_date = f'{parser_args.initial_date} {parser_args.initial_hour or "00"}'
+                        self.__api_goes.due_date = f'{parser_args.due_date} {parser_args.due_hour or "23"}'
+                    else:
+                        print(f'Initial date: {self.__api_goes.initial_date or "NOT DEFINED"}\nDue date: {self.__api_goes.due_date or "NOT DEFINED"}')
+
+                if parser_args.command == 'data_variable':
+                    if parser_args.value:
+                        self.__api_goes.product = parser_args.value
+                    else:
+                        print(self.__api_goes.data_variable)
+
+                if parser_args.command == 'coords':
+                    if parser_args.n_lat and parser_args.s_lat and parser_args.w_lon and parser_args.e_lon:
+                        self.__api_goes.lat_long_coords = {
+                            'n_lat': parser_args.n_lat,
+                            's_lat': parser_args.s_lat,
+                            'w_lon': parser_args.w_lo,
+                            'e_lon': parser_args.e_lon
+                        }
+                    else:
+                        print(self.__api_goes.lat_long_coords)
 
                 if parser_args.command == 'get_file':
                     self.__api_goes.get_file(datetime=parser_args.datetime, filename=parser_args.filename)
@@ -58,11 +88,8 @@ class CLI:
                 if parser_args.command == 'get_all_files_one_day':
                     self.__api_goes.get_all_files_one_day(date=parser_args.date, logs=parser_args.logs)
 
-                if parser_args.command == 'product':
-                    if parser_args.value:
-                        self.__api_goes.product = parser_args.value
-                    else:
-                        print(self.__api_goes.product)
+                if parser_args.command == 'incremental_download':
+                    self.__api_goes.get_all_files_from_the_last(logs=parser_args.logs)
 
             except Exception as e:
                 print("Invalid argument: {}".format(e))

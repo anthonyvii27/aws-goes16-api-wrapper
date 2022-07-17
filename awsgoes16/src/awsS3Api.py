@@ -54,7 +54,3 @@ class AwsS3Api(ABC):
     @abstractmethod
     def get_file(self, filename, datetime):
         pass
-
-    @abstractmethod
-    def get_all_files_one_day(self, date, logs):
-        pass
