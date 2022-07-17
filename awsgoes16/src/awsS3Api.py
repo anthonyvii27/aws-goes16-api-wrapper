@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from s3ClientFactory import S3ClientFactory
-from exceptions import ValueNotProvidedError
+from .s3ClientFactory import S3ClientFactory
+from .exceptions import ValueNotProvidedError
 import os
 
 
@@ -53,8 +53,4 @@ class AwsS3Api(ABC):
 
     @abstractmethod
     def get_file(self, filename, datetime):
-        pass
-
-    @abstractmethod
-    def get_all_files_one_day(self, date, logs):
         pass

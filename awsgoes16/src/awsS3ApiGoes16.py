@@ -4,10 +4,10 @@ from datetime import datetime
 
 import numpy as np
 
-from awsS3Api import AwsS3Api
-from exceptions import ValueNotProvidedError
-from utils import convert_to_datetime, convert_date_to_day_of_year, get_year, get_hour, is_valid_datetime, \
-    is_valid_date, convert_to_date
+from .awsS3Api import AwsS3Api
+from .exceptions import ValueNotProvidedError
+from .utils import get_hour, get_year, convert_to_date, convert_to_datetime, convert_date_to_day_of_year, \
+    is_valid_datetime, is_valid_date
 
 
 class AwsS3ApiGoes16(AwsS3Api):
@@ -71,7 +71,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('Invalid format')
+            raise Warning('The initial_date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         self.__initial_date = convert_to_datetime(date)
 
@@ -82,7 +82,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('Invalid format')
+            raise Warning('The due_date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         formatted_date = convert_to_datetime(date)
 
@@ -132,14 +132,14 @@ class AwsS3ApiGoes16(AwsS3Api):
         """
         self._s3_client.list_buckets(self.remote_bucket, self.local_bucket)
 
-    def list_bucket_files(self, bucket_name=""):
+    def list_bucket_files(self, bucket_name=''):
         """
         Displays the list of files present inside the defined bucket, which can be local or remote
 
         :param bucket_name: S3 bucket name
         :return: void
         """
-        if bucket_name == "local" or bucket_name == self.local_bucket:
+        if bucket_name == 'local' or bucket_name == self.local_bucket:
             self._s3_client.list_bucket_files(bucket_name, self.local_bucket)
             return
 
@@ -217,7 +217,7 @@ class AwsS3ApiGoes16(AwsS3Api):
             years.append('2018')
             os.mkdir(f'{self.local_bucket}/{2018}')
 
-        last_year = int(max(years))
+        last_year = max(years)
 
         days_in_the_years = os.listdir(f'{self.local_bucket}/{last_year}')
         if not days_in_the_years:

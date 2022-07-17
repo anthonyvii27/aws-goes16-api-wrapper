@@ -2,8 +2,8 @@ import s3fs
 import os
 import xarray as xr
 
-from s3Client import S3Client
-from awsgoes16.exceptions import ValueNotProvidedError
+from awsgoes16.src.s3Client import S3Client
+from awsgoes16.src.exceptions import ValueNotProvidedError
 
 
 class S3fsS3Client(S3Client):
@@ -97,7 +97,6 @@ class S3fsS3Client(S3Client):
         if not os.path.isdir(path_to_save_file):
             os.makedirs(path_to_save_file)
 
-            # with open(f'{path_to_save_file}/{filename}', 'w') as f:
         with self.__client.open(f'{path}/{filename}', 'rb') as file:
             ds = xr.open_dataset(file)
 
