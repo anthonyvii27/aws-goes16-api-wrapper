@@ -62,7 +62,7 @@ Feito isso, é possível acessar a CLI diretamente no seu terminal utilizando do
 
 <a id="exemplos"></a>
 ### Exemplos
-Abaixo estão alguns exemplos de como utilizar a API Wrapper do NOAA GOES16. Todos os exemplos podem ser encontrados na pasta [docs](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs).
+Abaixo estão alguns exemplos de como utilizar a API Wrapper do NOAA GOES16. Todos os exemplos podem ser encontrados na pasta [examples](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs/examples) presente dentro da pasta docs.
 
 #### Criando a instância da awsgoes16
 ```python
@@ -93,11 +93,6 @@ api_goes.get_file(datetime='2019-04-08 18', filename='OR_GLM-L2-LCFA_G16_s201909
 #### Realizando o download de todos os arquivos presentes em uma data específica
 ```python
 api_goes.get_all_files_one_day('2019-04-08')
-```
-
-#### Realizando o download incremental dos arquivos a partir do último presente no local bucket
-```python
-api_goes.get_all_files_from_the_last()
 ```
 
 <a id="documentacao"></a>
