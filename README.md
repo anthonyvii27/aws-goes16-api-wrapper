@@ -61,8 +61,8 @@ Feito isso, é possível acessar a CLI diretamente no seu terminal utilizando do
 ```
 
 <a id="exemplos"></a>
-### Exemplos
-Abaixo estão alguns exemplos de como utilizar a API Wrapper do NOAA GOES16. Todos os exemplos podem ser encontrados na pasta [examples](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs/examples) presente dentro da pasta docs.
+### Exemplos - Via importação
+Abaixo estão alguns exemplos de como utilizar a API Wrapper do NOAA GOES16 de forma programática. Todos os exemplos podem ser encontrados na pasta [examples](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs/examples) presente dentro da pasta docs.
 
 #### Criando a instância da awsgoes16
 ```python
@@ -73,6 +73,9 @@ api_goes = AwsS3ApiGoes16()
 
 #### Listando os arquivos presentes em um bucket (local e remoto)
 ```python
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
+api_goes = AwsS3ApiGoes16()
+
 # USING THE LOCAL BUCKET ALIAS = 'local'
 api_goes.list_bucket_files(bucket_name='local')
 
@@ -82,17 +85,58 @@ api_goes.list_bucket_files()
 
 #### Definindo os parâmetros de coordenadas (latitude e longitude) para filtragem dos dados dos arquivos
 ```python
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
+api_goes = AwsS3ApiGoes16()
+
 api_goes.lat_long_coords = {'n_lat': -22.5, 's_lat': -24.0, 'w_lon': -43.8, 'e_lon': -43.0}
 ```
 
 #### Fazendo o download de um arquivo específico
 ```python
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
+api_goes = AwsS3ApiGoes16()
+
 api_goes.get_file(datetime='2019-04-08 18', filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
 ```
 
 #### Realizando o download de todos os arquivos presentes em uma data específica
 ```python
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
+api_goes = AwsS3ApiGoes16()
+
 api_goes.get_all_files_one_day('2019-04-08')
+```
+
+### Exemplos - Via CLI
+
+#### Listando os arquivos presentes em um bucket (local e remoto)
+```shell
+# LOCAL BUCKET
+awsgoes16 list_bucket_files --bucket_name local
+
+# REMOTE BUCKET
+awsgoes16 list_bucket_files --bucket_name noaa-goes16
+```
+
+#### Definindo os parâmetros de coordenadas (latitude e longitude) para filtragem dos dados dos arquivos
+```shell
+awsgoes16 coords --n_lat -22.5 --s_lat -24.0 --w_lon -43.8 --e_lon -43.0
+# or
+awsgoes16 coords -nl -22.5 -sl -24.0 -wl -43.8 -el -43.0
+```
+
+#### Fazendo o download de um arquivo específico
+```shell
+awsgoes16 get_file --filename OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc --date 2019-04-08 --time 18
+# or
+awsgoes16 get_file -fn OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc -d 2019-04-08 -t 18
+```
+
+#### Realizando o download de todos os arquivos presentes em uma data específica
+```shell
+awsgoes16 get_all_files_one_day --date 2019-04-08 --logs False
+# or
+awsgoes16 get_all_files_one_day -d 2019-04-08 -l False
 ```
 
 <a id="documentacao"></a>

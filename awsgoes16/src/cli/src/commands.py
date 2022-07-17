@@ -86,10 +86,18 @@ COMMANDS = [
                 'default': '',
             },
             {
-                'name': '--datetime',
-                'alias': '-dt',
+                'name': '--date',
+                'alias': '-d',
                 'help': 'Lorem ipsum...',
                 'type': str,
+                'required': True,
+                'default': '',
+            },
+{
+                'name': '--time',
+                'alias': '-t',
+                'help': 'Lorem ipsum...',
+                'type': int,
                 'required': True,
                 'default': '',
             }
@@ -101,7 +109,7 @@ COMMANDS = [
         'arguments': [
             {
                 'name': '--date',
-                'alias': '-dt',
+                'alias': '-d',
                 'help': 'Lorem ipsum...',
                 'type': str,
                 'required': True,

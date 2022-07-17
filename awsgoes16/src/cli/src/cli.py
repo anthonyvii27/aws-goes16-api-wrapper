@@ -74,16 +74,19 @@ class CLI:
                 if parser_args.command == 'coords':
                     if parser_args.n_lat and parser_args.s_lat and parser_args.w_lon and parser_args.e_lon:
                         self.__api_goes.lat_long_coords = {
-                            'n_lat': parser_args.n_lat,
-                            's_lat': parser_args.s_lat,
-                            'w_lon': parser_args.w_lo,
-                            'e_lon': parser_args.e_lon
+                            'n_lat': float(parser_args.n_lat),
+                            's_lat': float(parser_args.s_lat),
+                            'w_lon': float(parser_args.w_lon),
+                            'e_lon': float(parser_args.e_lon)
                         }
                     else:
                         print(self.__api_goes.lat_long_coords)
 
                 if parser_args.command == 'get_file':
-                    self.__api_goes.get_file(datetime=parser_args.datetime, filename=parser_args.filename)
+                    self.__api_goes.get_file(
+                        datetime=f'{parser_args.date} {parser_args.time}',
+                        filename=parser_args.filename
+                    )
 
                 if parser_args.command == 'get_all_files_one_day':
                     self.__api_goes.get_all_files_one_day(date=parser_args.date, logs=parser_args.logs)
