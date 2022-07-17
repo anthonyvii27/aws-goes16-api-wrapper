@@ -1,4 +1,3 @@
-
 def get_year(date):
     """
     Get the year of a date in datetime format

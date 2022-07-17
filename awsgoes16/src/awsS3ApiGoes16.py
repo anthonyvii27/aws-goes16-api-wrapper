@@ -9,6 +9,8 @@ from .exceptions import ValueNotProvidedError
 from .utils import get_hour, get_year, convert_to_date, convert_to_datetime, convert_date_to_day_of_year, \
     is_valid_datetime, is_valid_date
 
+INITIAL_YEAR = 2018
+
 
 class AwsS3ApiGoes16(AwsS3Api):
     __product_list = ['ABI-L1b-RadF', 'ABI-L1b-RadC', 'ABI-L1b-RadM', 'ABI-L2-ACHAC', 'ABI-L2-ACHAF', 'ABI-L2-ACHAM',
@@ -60,7 +62,9 @@ class AwsS3ApiGoes16(AwsS3Api):
         upper_product_name = product_name.upper()
         is_valid = upper_product_name in self.__product_list
         if not is_valid:
-            raise Warning('Invalid product')
+            raise Warning('Invalid product. Check the valid product list in '
+                          'https://github.com/anthonyvii27/aws-goes16-api-wrapper/docs/valid_products.md or use the '
+                          'method list_products')
 
         self.__product = product_name
 
@@ -71,7 +75,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('The initial_date has a invalid format. The accepted format is yyyy-mm-dd HH')
+            raise Warning('The provided date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         self.__initial_date = convert_to_datetime(date)
 
@@ -82,7 +86,7 @@ class AwsS3ApiGoes16(AwsS3Api):
 
         is_valid = is_valid_datetime(date)
         if not is_valid:
-            raise Warning('The due_date has a invalid format. The accepted format is yyyy-mm-dd HH')
+            raise Warning('The provided date has a invalid format. The accepted format is yyyy-mm-dd HH')
 
         formatted_date = convert_to_datetime(date)
 
@@ -214,14 +218,14 @@ class AwsS3ApiGoes16(AwsS3Api):
     def get_all_files_from_the_last(self, logs=True):
         years = os.listdir(self.local_bucket)
         if not years:
-            years.append('2018')
-            os.mkdir(f'{self.local_bucket}/{2018}')
+            years.append(str(INITIAL_YEAR))
+            os.mkdir(f'{self.local_bucket}/{INITIAL_YEAR}')
 
-        last_year = max(years)
+        last_year = int(max(years))
 
         days_in_the_years = os.listdir(f'{self.local_bucket}/{last_year}')
         if not days_in_the_years:
-            days_in_the_years.append('001')
+            days_in_the_years.append('098')
 
         last_day = max(days_in_the_years)
 
@@ -233,7 +237,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         print('Preparing to download files...')
         for i in range(int(last_day), qty_days_in_the_year + 1):
             day_num = str(i)
-            day_num.rjust(3 + len(day_num), '0')
+            day_num = day_num.rjust(3, '0')
 
             date = datetime.strptime(f'{last_year}-{day_num}', '%Y-%j').strftime('%Y-%m-%d')
             self.get_all_files_one_day(date, logs=logs)

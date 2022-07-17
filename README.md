@@ -24,12 +24,13 @@ Para cada uma das duas formas citadas acima é feito um processo de instalação
 ### Instalação
 
 <a id="instalacao-programatica"></a>
-#### Forma programática
+### Forma programática
 Primeiro, faça o clone do repositório do projeto mais recente para seu ambiente local:
 
 ```shell
     git clone https://github.com/anthonyvii27/aws-goes16-api-wrapper.git
     cd aws-goes16-api-wrapper
+    pip install -r requirements.txt
 ```
 
 Feito isso, insira o projeto dentro do seu ambiente de trabalho e faça as importações necessárias para utilizar das classes e métodos do goes16 dentro do seu projeto.
@@ -37,13 +38,14 @@ Feito isso, insira o projeto dentro do seu ambiente de trabalho e faça as impor
 Você pode encontrar exemplos de como utilizar da AWS GOES16 API Wrapper nos exemplos presentes dentro da pasta [docs](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs)
 
 <a id="instalacao-cli"></a>
-#### Via CLI
+### Via CLI
 
 Para utilizar o projeto via CLI o processo inicial é o mesmo da forma programática. Primeiramente, realize o clone do repositório do projeto para seu ambiente local:
 
 ```shell
     git clone https://github.com/anthonyvii27/aws-goes16-api-wrapper.git
     cd aws-goes16-api-wrapper
+    pip install -r requirements.txt
 ```
 
 Após isso, dentro pasta do projeto, rode o comando abaixo para instalar a CLI no seu ambiente:
@@ -60,7 +62,43 @@ Feito isso, é possível acessar a CLI diretamente no seu terminal utilizando do
 
 <a id="exemplos"></a>
 ### Exemplos
-Coming soon
+Abaixo estão alguns exemplos de como utilizar a API Wrapper do NOAA GOES16. Todos os exemplos podem ser encontrados na pasta [docs](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs).
+
+#### Criando a instância da awsgoes16
+```python
+from awsgoes16.src.awsS3ApiGoes16 import AwsS3ApiGoes16
+
+api_goes = AwsS3ApiGoes16()
+```
+
+#### Listando os arquivos presentes em um bucket (local e remoto)
+```python
+# USING THE LOCAL BUCKET ALIAS = 'local'
+api_goes.list_bucket_files(bucket_name='local')
+
+# REMOTE BUCKET
+api_goes.list_bucket_files()
+```
+
+#### Definindo os parâmetros de coordenadas (latitude e longitude) para filtragem dos dados dos arquivos
+```python
+api_goes.lat_long_coords = {'n_lat': -22.5, 's_lat': -24.0, 'w_lon': -43.8, 'e_lon': -43.0}
+```
+
+#### Fazendo o download de um arquivo específico
+```python
+api_goes.get_file(datetime='2019-04-08 18', filename='OR_GLM-L2-LCFA_G16_s20190981800000_e20190981800200_c20190981800229.nc')
+```
+
+#### Realizando o download de todos os arquivos presentes em uma data específica
+```python
+api_goes.get_all_files_one_day('2019-04-08')
+```
+
+#### Realizando o download incremental dos arquivos a partir do último presente no local bucket
+```python
+api_goes.get_all_files_from_the_last()
+```
 
 <a id="documentacao"></a>
 ## Documentação

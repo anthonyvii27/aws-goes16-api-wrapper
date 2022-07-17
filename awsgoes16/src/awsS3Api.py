@@ -48,9 +48,5 @@ class AwsS3Api(ABC):
         pass
 
     @abstractmethod
-    def list_products(self):
-        pass
-
-    @abstractmethod
     def get_file(self, filename, datetime):
         pass
