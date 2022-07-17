@@ -40,6 +40,24 @@ class CLI:
                     else:
                         print(self.__api_goes.local_bucket)
 
+                if parser_args.command == 'authenticate':
+                    self.__api_goes.authenticate(access_key=parser_args.access_key, secret_key=parser_args.secret_key)
+
+                if parser_args.command == 'list_buckets':
+                    self.__api_goes.list_buckets()
+
+                if parser_args.command == 'list_bucket_files':
+                    self.__api_goes.list_bucket_files(bucket_name=parser_args.bucket_name)
+
+                if parser_args.command == 'list_products':
+                    self.__api_goes.list_products()
+
+                if parser_args.command == 'get_file':
+                    self.__api_goes.get_file(datetime=parser_args.datetime, filename=parser_args.filename)
+
+                if parser_args.command == 'get_all_files_one_day':
+                    self.__api_goes.get_all_files_one_day(date=parser_args.date, logs=parser_args.logs)
+
                 if parser_args.command == 'product':
                     if parser_args.value:
                         self.__api_goes.product = parser_args.value
@@ -63,6 +81,7 @@ class CLI:
                 help=argument['help'],
                 type=argument['type'],
                 required=argument['required'],
+                default=argument['default'],
             )
 
     def __create_subparsers(self, subparsers):
