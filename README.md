@@ -4,7 +4,7 @@
 ## Sumário
 * [Guia Inicial](#guia-inicial)
   * [Instalação](#instalacao)
-    * [Uso via importação (programática)](#instalacao-programatica)
+    * [Uso via importação](#instalacao-programatica)
     * [Uso via CLI](#instalacao-cli)
   * [Exemplos](#exemplos)
 * [Documentação](#documentacao)
