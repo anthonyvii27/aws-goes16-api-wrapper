@@ -137,3 +137,6 @@ awsgoes16 get_all_files_one_day -d 2019-04-08 -l False
 <a id="documentacao"></a>
 ## Documentação
 Você pode encontrar toda a documentação deste projeto dentro da pasta [docs](https://github.com/anthonyvii27/aws-goes16-api-wrapper/tree/master/docs).
+
+* [Guia Inicial](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/getting_start.md)
+* [Definição de parâmetros](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/setting_parameters.md)
