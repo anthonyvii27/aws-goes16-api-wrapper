@@ -456,5 +456,3 @@ awsgoes16 incremental_download -l False
 | Parâmetro | Abreviação | Descrição                                                                                     | Default |
 |-----------|------------|-----------------------------------------------------------------------------------------------|---------|
 | --logs    | -s         | Booleano que define se o usuário deseja ver ou não logs da execução dos downloads no terminal | True    |
-
-[Voltar para a configuração dos parâmetros](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/setting_parameters.md)
