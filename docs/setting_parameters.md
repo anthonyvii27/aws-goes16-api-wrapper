@@ -132,3 +132,6 @@ awsgoes16 coords --n_lat -22.5 --s_lat -24.0 --w_lon -43.8 --e_lon -43.0
 # or
 awsgoes16 coords -nl -22.5 -sl -24.0 -wl -43.8 -el -43.0
 ```
+
+[Ir para a documentação dos métodos](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/methods.md)
+[Voltar para o guia inicial](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/getting_start.md)

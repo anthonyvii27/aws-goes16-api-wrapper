@@ -140,3 +140,5 @@ Você pode encontrar toda a documentação deste projeto dentro da pasta [docs](
 
 * [Guia Inicial](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/getting_start.md)
 * [Definição de parâmetros](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/setting_parameters.md)
+* [Métodos](https://github.com/anthonyvii27/aws-goes16-api-wrapper/blob/master/docs/methods.md)
+
