@@ -22,5 +22,9 @@ class S3Client(ABC):
         pass
 
     @abstractmethod
-    def get_file(self, local_bucket, filename, path, coords):
+    def get_file_metadata(self, path, filename):
+        pass
+
+    @abstractmethod
+    def get_file(self, local_bucket, filename, path, coords, netcdf_data_variable, product_name):
         pass

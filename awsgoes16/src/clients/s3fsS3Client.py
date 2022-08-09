@@ -4,6 +4,15 @@ import xarray as xr
 
 from awsgoes16.src.s3Client import S3Client
 from awsgoes16.src.exceptions import ValueNotProvidedError
+from awsgoes16.src.utils.converters import get_xy_from_latlon, calc_latlon
+
+PRODUCT_LIST_WITH_LAT_LON = ['ABI-L2-DMWC', 'ABI-L2-DMWF', 'ABI-L2-DMWM', 'ABI-L2-DSRC', 'ABI-L2-DSRF',
+                             'ABI-L2-DSRM', 'ABI-L2-RSRC', 'ABI-L2-RSRF']
+
+PRODUCT_LIST_WITH_EVENT_LAT_LONG = ['GLM-L2-LCFA']
+
+PRODUCT_LIST_WITHOUT_COORDS = ['SUVI-L1b-Fe093', 'SUVI-L1b-Fe131', 'SUVI-L1b-Fe171', 'SUVI-L1b-Fe195',
+                               'SUVI-L1b-Fe284', 'SUVI-L1b-He303']
 
 
 class S3fsS3Client(S3Client):
@@ -74,7 +83,15 @@ class S3fsS3Client(S3Client):
         files = self.__client.ls(path)
         return files
 
-    def get_file(self, local_bucket, filename, path, coords):
+    def get_file_metadata(self, path, filename):
+        try:
+            with self.__client.open(f'{path}/{filename}', 'rb') as file:
+                return file.metadata()
+
+        except Warning as err:
+            print(f'Error: {err}')
+
+    def get_file(self, local_bucket, filename, path, coords, netcdf_data_variable, product_name):
         if not filename:
             raise ValueNotProvidedError('Error: Filename not provided')
 
@@ -99,6 +116,14 @@ class S3fsS3Client(S3Client):
 
         with self.__client.open(f'{path}/{filename}', 'rb') as file:
             ds = xr.open_dataset(file)
+            # ds = calc_latlon(ds)
+
+            # ds = (ds.where(
+            #         (ds.coords['lat'] >= coords['s_lat']) & (ds.coords['lat'] <= coords['n_lat']) &
+            #         (ds.coords['lon'] >= coords['w_lon']) & (ds.coords['lon'] <= coords['e_lon']),
+            #         drop=True))
+
+            # print(ds.where((ds.coords['lat'] >= coords['s_lat']) & (ds.coords['lat'] <= coords['n_lat']) & (ds.coords['lon'] >= coords['w_lon']) & (ds.coords['lon'] <= coords['e_lon']), drop=True))
 
             ds = (ds['event_energy'].where(
                 (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &

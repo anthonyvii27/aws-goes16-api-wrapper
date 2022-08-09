@@ -11,7 +11,6 @@ from .utils import get_hour, get_year, convert_to_date, convert_to_datetime, con
 
 INITIAL_YEAR = 2018
 
-
 class AwsS3ApiGoes16(AwsS3Api):
     __product_list = ['ABI-L1b-RadF', 'ABI-L1b-RadC', 'ABI-L1b-RadM', 'ABI-L2-ACHAC', 'ABI-L2-ACHAF', 'ABI-L2-ACHAM',
                       'ABI-L2-ACHTF', 'ABI-L2-ACHTM', 'ABI-L2-ACMC', 'ABI-L2-ACMF', 'ABI-L2-ACMM', 'ABI-L2-ACTPC',
@@ -31,7 +30,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         self.__product = 'GLM-L2-LCFA'
         self.__initial_date = ''
         self.__due_date = ''
-        self.__data_variable = ''
+        self.__data_variable = 'event_energy'
         self.__lat_long_coords = dict(zip(['n_lat', 's_lat', 'w_lon', 'e_lon'], ['', '', '', '']))
 
     @property
@@ -159,6 +158,30 @@ class AwsS3ApiGoes16(AwsS3Api):
         for product in self.__product_list:
             print(f'-  {product}')
 
+    def get_file_metadata(self, filename, datetime):
+        """
+        Get the specified file's metadata
+        :param filename: File name to download
+        :param datetime: Datetime in format yyyy-mm-dd HH
+        :return: object
+        """
+        is_valid = is_valid_datetime(datetime)
+        if not is_valid:
+            raise Warning('The "datetime" parameter has an invalid format. The accepted format is "yyyy-mm-dd HH"')
+
+        formatted_date = convert_to_datetime(datetime)
+        year = get_year(formatted_date)
+        hour = get_hour(formatted_date)
+        day_of_year = convert_date_to_day_of_year(formatted_date)
+
+        try:
+            return self._s3_client.get_file_metadata(
+                path=f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}',
+                filename=filename
+            )
+        except Warning as err:
+            print(f'An error has occurred: {err}')
+
     def get_file(self, datetime, filename):
         """
         Download the specified file to the defined local bucket
@@ -181,7 +204,9 @@ class AwsS3ApiGoes16(AwsS3Api):
                 self.local_bucket,
                 path=f'{self.remote_bucket}/{self.__product}/{year}/{day_of_year}/{hour}',
                 filename=filename,
-                coords=self.__lat_long_coords
+                coords=self.__lat_long_coords,
+                netcdf_data_variable=self.data_variable,
+                product_name=self.__product
             )
         except Warning as err:
             print(f'An error has occurred: {err}')

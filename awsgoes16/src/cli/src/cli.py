@@ -17,7 +17,10 @@ class CLI:
         self.__api_goes.initial_date = os.getenv('AWS_GOES16_CLI_INITIAL_DATE', '')
         self.__api_goes.due_date = os.getenv('AWS_GOES16_CLI_DUE_DATE', '')
         self.__api_goes.data_variable = os.getenv('AWS_GOES16_CLI_DATA_VARIABLE', '')
-        self.__api_goes.lat_long_coords = {'n_lat': float(os.getenv('AWS_GOES16_CLI_NORTH_LATITUDE', '')), 's_lat': float(os.getenv('AWS_GOES16_CLI_SOUTH_LATITUDE', '')),'w_lon': float(os.getenv('AWS_GOES16_CLI_WEST_LONGITUDE', '')),'e_lon': float(os.getenv('AWS_GOES16_CLI_EAST_LONGITUDE', ''))}
+        self.__api_goes.lat_long_coords = {'n_lat': float(os.getenv('AWS_GOES16_CLI_NORTH_LATITUDE', '')),
+                                           's_lat': float(os.getenv('AWS_GOES16_CLI_SOUTH_LATITUDE', '')),
+                                           'w_lon': float(os.getenv('AWS_GOES16_CLI_WEST_LONGITUDE', '')),
+                                           'e_lon': float(os.getenv('AWS_GOES16_CLI_EAST_LONGITUDE', ''))}
 
         self.__run()
 
@@ -73,13 +76,15 @@ class CLI:
 
                 if parser_args.command == 'period':
                     if parser_args.initial_date and parser_args.due_date:
-                        os.environ['AWS_GOES16_CLI_INITIAL_DATE'] = f'{parser_args.initial_date} {parser_args.initial_hour or "00"}'
+                        os.environ[
+                            'AWS_GOES16_CLI_INITIAL_DATE'] = f'{parser_args.initial_date} {parser_args.initial_hour or "00"}'
                         self.__api_goes.initial_date = f'{parser_args.initial_date} {parser_args.initial_hour or "00"}'
 
                         os.environ['AWS_GOES16_CLI_DUE_DATE'] = f'{parser_args.due_date} {parser_args.due_hour or "23"}'
                         self.__api_goes.due_date = f'{parser_args.due_date} {parser_args.due_hour or "23"}'
                     else:
-                        print(f'Initial date: {self.__api_goes.initial_date or "NOT DEFINED"}\nDue date: {self.__api_goes.due_date or "NOT DEFINED"}')
+                        print(
+                            f'Initial date: {self.__api_goes.initial_date or "NOT DEFINED"}\nDue date: {self.__api_goes.due_date or "NOT DEFINED"}')
 
                 if parser_args.command == 'data_variable':
                     if parser_args.value:
