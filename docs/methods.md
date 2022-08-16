@@ -78,6 +78,25 @@ api_goes.list_products()
 awsgoes16 list_products
 ```
 
+### Alteração da netCDN Data Variable
+A netCDN Data Variable é um ponto muito importante no momento de configuração da AWS GOES16 para realização do download de forma correta. Ela é responsável por informar ao sistema qual a "dimensão" de dados que será feito o download durante a filtragem. Por default, o valor setado é *event-energy*, valor esse referente ao produto *GLM-L2-LCFA*.
+
+#### Forma programática
+```python
+api_goes.data_variable = 'VALUE'
+```
+
+| Parâmetro | Descrição                                                                                     | Default      |
+|-----------|-----------------------------------------------------------------------------------------------|--------------|
+| --value   | Variável de dados referida                                                                    | event-energy |
+
+#### Via CLI
+```shell
+awsgoes16 data_variable --value VALOR
+# or
+awsgoes16 data_variable -v VALOR
+```
+
 ### Baixar um arquivo específico
 Para baixar um arquivo específico do NOAA GOES16, execute os comandos abaixo baseando-se na forma como está sendo feita a implementação.
 
