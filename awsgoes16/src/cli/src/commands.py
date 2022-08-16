@@ -1,12 +1,12 @@
 COMMANDS = [
     {
         'name': 'remote_bucket',
-        'help': 'Lorem ipsum...',
+        'help': 'Setar o remote bucket ao qual desejas trabalhar no futuro',
         'arguments': [
             {
                 'name': '--value',
                 'alias': '-v',
-                'help': 'Lorem ipsum...',
+                'help': 'Nome referente ao remote bucket',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -15,12 +15,12 @@ COMMANDS = [
     },
     {
         'name': 'local_bucket',
-        'help': 'Lorem ipsum...',
+        'help': 'Setar o local bucket ao qual desejas trabalhar no futuro',
         'arguments': [
             {
                 'name': '--value',
                 'alias': '-v',
-                'help': 'Lorem ipsum...',
+                'help': 'Nome referente ao local bucket',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -29,12 +29,13 @@ COMMANDS = [
     },
     {
         'name': 'authenticate',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por realizar a autenticação do usuário. OBS.: Para acesso aos repositório do NOAA GOES16 '
+                'não é necessário realizar autenticação',
         'arguments': [
             {
                 'name': '--access_key',
                 'alias': '-ak',
-                'help': 'Lorem ipsum...',
+                'help': 'AWS Access Key',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -42,7 +43,7 @@ COMMANDS = [
             {
                 'name': '--secret_key',
                 'alias': '-sk',
-                'help': 'Lorem ipsum...',
+                'help': 'AWS Secret Key',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -51,17 +52,17 @@ COMMANDS = [
     },
     {
         'name': 'list_buckets',
-        'help': 'Lorem ipsum...',
+        'help': 'Listagem dos buckets',
         'arguments': []
     },
     {
         'name': 'list_bucket_files',
-        'help': 'Lorem ipsum...',
+        'help': 'Listagem dos arquivos presentes no bucket informado',
         'arguments': [
             {
                 'name': '--bucket_name',
                 'alias': '-bn',
-                'help': 'Lorem ipsum...',
+                'help': 'Nome do bucket ao qual será feito a listagem',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -70,17 +71,17 @@ COMMANDS = [
     },
     {
         'name': 'list_products',
-        'help': 'Lorem ipsum...',
+        'help': 'Listagem dos produtos do NOAA GOES16 permitidos',
         'arguments': []
     },
     {
         'name': 'get_file',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por fazer o download do arquivo especificado',
         'arguments': [
             {
                 'name': '--filename',
                 'alias': '-fn',
-                'help': 'Lorem ipsum...',
+                'help': 'Nome do arquivo',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -88,7 +89,7 @@ COMMANDS = [
             {
                 'name': '--date',
                 'alias': '-d',
-                'help': 'Lorem ipsum...',
+                'help': 'Data no formato yyyy-mm-dd',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -96,7 +97,7 @@ COMMANDS = [
 {
                 'name': '--time',
                 'alias': '-t',
-                'help': 'Lorem ipsum...',
+                'help': 'Valor referente à hora do dia com valor entre 00 e 23',
                 'type': int,
                 'required': True,
                 'default': '',
@@ -105,12 +106,12 @@ COMMANDS = [
     },
     {
         'name': 'get_all_files_one_day',
-        'help': 'Lorem ipsum...',
+        'help': 'Realiza o download de todos os arquivos do dia informado',
         'arguments': [
             {
                 'name': '--date',
                 'alias': '-d',
-                'help': 'Lorem ipsum...',
+                'help': 'Data no formato yyyy-mm-dd',
                 'type': str,
                 'required': True,
                 'default': '',
@@ -118,7 +119,7 @@ COMMANDS = [
             {
                 'name': '--logs',
                 'alias': '-l',
-                'help': 'Lorem ipsum...',
+                'help': 'Caso True, apresenta os logs no momento do download. Default: True',
                 'type': bool,
                 'required': False,
                 'default': True,
@@ -127,12 +128,12 @@ COMMANDS = [
     },
     {
         'name': 'product',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por setar o valor de produto',
         'arguments': [
             {
                 'name': '--value',
                 'alias': '-v',
-                'help': 'Lorem ipsum...',
+                'help': 'Nome do produto',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -141,12 +142,12 @@ COMMANDS = [
     },
     {
         'name': 'period',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por setar as datas/horas de início e fim para utilizar em downloads futuros',
         'arguments': [
             {
                 'name': '--initial_date',
                 'alias': '-id',
-                'help': 'Lorem ipsum...',
+                'help': 'Data de início no formato yyyy-mm-dd',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -154,7 +155,7 @@ COMMANDS = [
             {
                 'name': '--initial_hour',
                 'alias': '-ih',
-                'help': 'Lorem ipsum...',
+                'help': 'Valor referente à hora do dia com valor entre 00 e 23',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -162,7 +163,7 @@ COMMANDS = [
             {
                 'name': '--due_date',
                 'alias': '-dd',
-                'help': 'Lorem ipsum...',
+                'help': 'Data de término no formato yyyy-mm-dd',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -170,7 +171,7 @@ COMMANDS = [
             {
                 'name': '--due_hour',
                 'alias': '-dh',
-                'help': 'Lorem ipsum...',
+                'help': 'Valor referente à hora do dia com valor entre 00 e 23',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -179,12 +180,12 @@ COMMANDS = [
     },
     {
         'name': 'data_variable',
-        'help': 'Lorem ipsum...',
+        'help': 'netCDN Variable para filtragem. Default: event-energy',
         'arguments': [
             {
                 'name': '--value',
                 'alias': '-v',
-                'help': 'Lorem ipsum...',
+                'help': 'Variável de dados',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -193,12 +194,12 @@ COMMANDS = [
     },
     {
         'name': 'coords',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por setar as coordenadas para filtragem',
         'arguments': [
             {
                 'name': '--n_lat',
                 'alias': '-nl',
-                'help': 'Lorem ipsum...',
+                'help': 'North Latitude',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -206,7 +207,7 @@ COMMANDS = [
             {
                 'name': '--s_lat',
                 'alias': '-sl',
-                'help': 'Lorem ipsum...',
+                'help': 'South Latitude',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -214,7 +215,7 @@ COMMANDS = [
             {
                 'name': '--w_lon',
                 'alias': '-wl',
-                'help': 'Lorem ipsum...',
+                'help': 'West Longitude',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -222,7 +223,7 @@ COMMANDS = [
             {
                 'name': '--e_lon',
                 'alias': '-el',
-                'help': 'Lorem ipsum...',
+                'help': 'East Longitude',
                 'type': str,
                 'required': False,
                 'default': '',
@@ -231,12 +232,13 @@ COMMANDS = [
     },
     {
         'name': 'incremental_download',
-        'help': 'Lorem ipsum...',
+        'help': 'Responsável por realizar o download incremental dos arquivos a partir do arquivo mais recente '
+                'presente no local bucket',
         'arguments': [
             {
                 'name': '--logs',
                 'alias': '-l',
-                'help': 'Lorem ipsum...',
+                'help': 'Caso True, apresenta os logs no momento do download. Default: True',
                 'type': bool,
                 'required': False,
                 'default': True,
