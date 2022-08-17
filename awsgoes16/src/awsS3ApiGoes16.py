@@ -58,8 +58,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         if not product_name:
             raise ValueNotProvidedError(message='product_name parameter not provided')
 
-        upper_product_name = product_name.upper()
-        is_valid = upper_product_name in self.__product_list
+        is_valid = product_name in self.__product_list
         if not is_valid:
             raise Warning('Invalid product. Check the valid product list in '
                           'https://github.com/anthonyvii27/aws-goes16-api-wrapper/docs/valid_products.md or use the '

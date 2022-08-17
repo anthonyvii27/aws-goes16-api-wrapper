@@ -4,7 +4,6 @@ import xarray as xr
 
 from awsgoes16.src.s3Client import S3Client
 from awsgoes16.src.exceptions import ValueNotProvidedError
-from awsgoes16.src.utils.converters import get_xy_from_latlon, calc_latlon
 
 PRODUCT_LIST_WITH_LAT_LON = ['ABI-L2-DMWC', 'ABI-L2-DMWF', 'ABI-L2-DMWM', 'ABI-L2-DSRC', 'ABI-L2-DSRF',
                              'ABI-L2-DSRM', 'ABI-L2-RSRC', 'ABI-L2-RSRF']
@@ -98,16 +97,16 @@ class S3fsS3Client(S3Client):
         if not path:
             raise ValueNotProvidedError('Error: Path not provided')
 
-        if not coords['n_lat']:
+        if product_name == 'GLM-L2-LCFA' and not coords['n_lat']:
             raise ValueNotProvidedError('It is necessary to provide the value referring to north latitude: n_lat')
 
-        if not coords['s_lat']:
+        if product_name == 'GLM-L2-LCFA' and not coords['s_lat']:
             raise ValueNotProvidedError('It is necessary to provide the value referring to south latitude: s_lat')
 
-        if not coords['e_lon']:
+        if product_name == 'GLM-L2-LCFA' and not coords['e_lon']:
             raise ValueNotProvidedError('It is necessary to provide the value referring to east longitude: e_lon')
 
-        if not coords['w_lon']:
+        if product_name == 'GLM-L2-LCFA' and not coords['w_lon']:
             raise ValueNotProvidedError('It is necessary to provide the value referring to west latitude: w_lon')
 
         path_to_save_file = f'{local_bucket}/{path.split("/")[2]}/{path.split("/")[3]}'
@@ -116,20 +115,25 @@ class S3fsS3Client(S3Client):
 
         with self.__client.open(f'{path}/{filename}', 'rb') as file:
             ds = xr.open_dataset(file)
-            ds = (ds['event_energy'].where(
-                (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &
-                (ds['event_lon'] >= coords['w_lon']) & (ds['event_lon'] <= coords['e_lon']),
-                drop=True))
+
+            if product_name == 'GLM-L2-LCFA':
+                ds = (ds[netcdf_data_variable].where(
+                    (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &
+                    (ds['event_lon'] >= coords['w_lon']) & (ds['event_lon'] <= coords['e_lon']),
+                    drop=True))
+            else:
+                ds = ds[netcdf_data_variable]
 
             df = ds.to_dataframe()
-            df.drop(df.columns[4:-1], axis=1, inplace=True)
-            df.drop(df.columns[0], axis=1, inplace=True)
-            df.rename(columns={'event_time_offset': 'time',
-                               'event_lat': 'lat',
-                               'event_lon': 'lon',
-                               'event_energy': 'energy'},
-                      inplace=True)
-            df.set_index('time', inplace=True)
+
+            # df.drop(df.columns[4:-1], axis=1, inplace=True)
+            # df.drop(df.columns[0], axis=1, inplace=True)
+            # df.rename(columns={'event_time_offset': 'time',
+            #                    'event_lat': 'lat',
+            #                    'event_lon': 'lon',
+            #                    'event_energy': 'energy'},
+            #           inplace=True)
+            # df.set_index('time', inplace=True)
 
             df.to_csv(f'{path_to_save_file}/{filename[:-3]}.csv')
             file.close()
