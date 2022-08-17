@@ -116,15 +116,6 @@ class S3fsS3Client(S3Client):
 
         with self.__client.open(f'{path}/{filename}', 'rb') as file:
             ds = xr.open_dataset(file)
-            # ds = calc_latlon(ds)
-
-            # ds = (ds.where(
-            #         (ds.coords['lat'] >= coords['s_lat']) & (ds.coords['lat'] <= coords['n_lat']) &
-            #         (ds.coords['lon'] >= coords['w_lon']) & (ds.coords['lon'] <= coords['e_lon']),
-            #         drop=True))
-
-            # print(ds.where((ds.coords['lat'] >= coords['s_lat']) & (ds.coords['lat'] <= coords['n_lat']) & (ds.coords['lon'] >= coords['w_lon']) & (ds.coords['lon'] <= coords['e_lon']), drop=True))
-
             ds = (ds['event_energy'].where(
                 (ds['event_lat'] >= coords['s_lat']) & (ds['event_lat'] <= coords['n_lat']) &
                 (ds['event_lon'] >= coords['w_lon']) & (ds['event_lon'] <= coords['e_lon']),
