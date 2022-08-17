@@ -11,6 +11,7 @@ from .utils import get_hour, get_year, convert_to_date, convert_to_datetime, con
 
 INITIAL_YEAR = 2018
 
+
 class AwsS3ApiGoes16(AwsS3Api):
     __product_list = ['ABI-L1b-RadF', 'ABI-L1b-RadC', 'ABI-L1b-RadM', 'ABI-L2-ACHAC', 'ABI-L2-ACHAF', 'ABI-L2-ACHAM',
                       'ABI-L2-ACHTF', 'ABI-L2-ACHTM', 'ABI-L2-ACMC', 'ABI-L2-ACMF', 'ABI-L2-ACMM', 'ABI-L2-ACTPC',
@@ -31,7 +32,7 @@ class AwsS3ApiGoes16(AwsS3Api):
         self.__initial_date = ''
         self.__due_date = ''
         self.__data_variable = 'event_energy'
-        self.__lat_long_coords = dict(zip(['n_lat', 's_lat', 'w_lon', 'e_lon'], ['', '', '', '']))
+        self.__lat_long_coords = dict(zip(['n_lat', 's_lat', 'w_lon', 'e_lon'], [-22.5, -24.0, -43.8, -43.0]))
 
     @property
     def product(self):
